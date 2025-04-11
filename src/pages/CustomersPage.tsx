@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCustomers } from '../api/customers';
+import CustomerGrid from '../components/CustomerGrid';
 import { Customer } from '../api/types';
 
 export default function CustomersPage() {
@@ -10,18 +11,7 @@ export default function CustomersPage() {
         <h2>Customers</h2>
         { isLoading && <p>Loading customers...</p> }
         { error && <p>Error loading customers: Error (error as Error)?.message</p> }
-        { isSuccess && (
-            <table>
-                <tbody>
-                {data?._embedded?.customers?.map((c: Customer) => (
-                    <tr key={c._links.self.href}>
-                        <td>{c.firstname}</td>
-                        <td>{c.lastname}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        )}
+        { isSuccess && <CustomerGrid customers={customers} />}
         </>
     )
 }
