@@ -20,7 +20,7 @@ export default function CustomersPage() {
             self: {href: ''}
         }
     }
-
+    const [customer, setCustomer] = useState(emptyCustomer);
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
 
     const handleDelete = (customer: Customer) => {
@@ -29,6 +29,14 @@ export default function CustomersPage() {
       
     const handleEdit = (customer: Customer) => {
         console.log("Edit:", customer);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("Dialog input handled")
+    };
+
+    const handleSubmit = () => {
+        
     };
 
     const [open, setOpen] = useState(false);
@@ -42,6 +50,8 @@ export default function CustomersPage() {
         <CustomerDialog 
             open={open}
             onClose={() => setOpen(false)}
+            onChange={handleChange}
+            onSubmit={handleSubmit}
             customer={selectedCustomer}
         />
         { isLoading && <p>Loading customers...</p> }
