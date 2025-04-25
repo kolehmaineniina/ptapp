@@ -47,11 +47,6 @@ export default function CustomersPage() {
         setOpen(false);
     };
 
-    const handleEdit = (customer: Customer) => {
-        setSelectedCustomer(customer);
-        setOpen(true);
-    };
-
     const handleDelete = async (customer: Customer) => {
         if (!customer._links?.self.href) return;
 
@@ -67,7 +62,7 @@ export default function CustomersPage() {
     };
 
     const [open, setOpen] = useState(false);
-    const { data, isLoading, error, isSuccess } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
+    const { data, isLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
     const customers = data?._embedded?.customers ?? [];
 
     return (
@@ -91,11 +86,11 @@ export default function CustomersPage() {
         <Button
             variant="outlined"
             disabled={!selectedCustomer}
-            onClick={() => selectedCustomer && handleEdit(selectedCustomer)}
+            onClick={() => setOpen(true)}
         >
         Edit
         </Button>
-        
+
         <Button
             variant="outlined"
             color="error"
