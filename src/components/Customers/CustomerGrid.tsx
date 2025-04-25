@@ -2,18 +2,18 @@ import { Customer } from '../../api/types';
 import { AgGridReact } from "ag-grid-react"
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { Button } from '@mui/material';
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
 export default function CustomerGrid(props: {
     customers: Customer[];
-    handleDelete: (customer: Customer) => void;
-    handleEdit: (customer: Customer) => void;
+    handle
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
+        {headerCheckboxSelection: true, checkboxSelection: true, width: 50},   
         {headerName: 'First Name', field: 'firstname', floatingFilter: true,},
         {headerName: 'Last Name', field: 'lastname', floatingFilter: true,},
         {headerName: 'Email', field: 'email'},
@@ -30,16 +30,28 @@ export default function CustomerGrid(props: {
         )}
     ], []);
 
+    const gridRef = useRef<AgGridReact<Customer>>(null);
+
+    const handleRowSelection = () => {
+        const selectedNodes = gridRef.current?.api.getSelectedNodes();
+        const selectedData = selectedNodes?.[0]?.data;
+      
+        
+        if (props.handleSelectedRow && selectedData) {
+          props.onRowSelected(selectedData);
+        }
+      };
+
     return (
         <div style={{ height: 500 }}>
             <AgGridReact
-                editType="fullRow"
+                rowSelection="single"
+                onSelectionChanged={handleRowSelection}
                 rowData={props.customers}
                 columnDefs={colDefs}
                 defaultColDef={
                     { sortable: true,
                     filter: true,
-                    editable: true,
                     resizable: true }
                 }
             />
