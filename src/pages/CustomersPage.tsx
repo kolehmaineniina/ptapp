@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
@@ -22,6 +22,15 @@ export default function CustomersPage() {
     }
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
 
+    const queryClient = useQueryClient();
+
+    const refreshData = () => {
+        queryClient.invalidateQueries({ queryKey: ['customers'] });
+    }
+
+    const clenUp = () => {
+        
+    }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!selectedCustomer) return;
@@ -37,7 +46,7 @@ export default function CustomersPage() {
            await postCustomer(selectedCustomer);
         }
         
-        getCustomers();
+        refreshData();
         setSelectedCustomer(emptyCustomer);
         setOpen(false);
     };
@@ -51,7 +60,7 @@ export default function CustomersPage() {
         if (!customer._links?.self.href) return;
 
         deleteCustomer(customer._links.self.href);
-        getCustomers();
+        refreshData();
         setSelectedCustomer(emptyCustomer);
     };
 
