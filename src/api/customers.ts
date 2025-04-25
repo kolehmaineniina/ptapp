@@ -41,6 +41,12 @@ export async function postCustomer(customer: Customer) {
     return await response.json();
 }
 
-export async function deleteCustomer() {
-
+export async function deleteCustomer(url: string) {
+    const response = await fetch(url, {
+      method: 'DELETE'
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to delete customer');
+    }
 }

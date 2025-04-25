@@ -20,33 +20,39 @@ export default function CustomersPage() {
             self: {href: ''}
         }
     }
-    const [customer, setCustomer] = useState(emptyCustomer);
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
 
-    const handleDelete = (customer: Customer) => {
-        deleteCustomer;
-      };
-      
-    const handleEdit = (customer: Customer) => {
-        setSelectedCustomer(customer);
-        setOpen(true);
-    };
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!selectedCustomer) return;
+
         setSelectedCustomer({...selectedCustomer, [event.target.name]: event.target.value
         });
     };
-
+    
     const handleSubmit = async () => {
         if (selectedCustomer?._links?.self?.href) {
            await putCustomer(selectedCustomer);
         } else {
            await postCustomer(selectedCustomer);
         }
+        
         getCustomers();
         setSelectedCustomer(emptyCustomer);
         setOpen(false);
+    };
+
+    const handleEdit = (customer: Customer) => {
+        setSelectedCustomer(customer);
+        setOpen(true);
+    };
+
+    const handleDelete = async (customer: Customer) => {
+        if (!customer._links?.self.href) return;
+
+        deleteCustomer(customer._links.self.href);
+        getCustomers();
+        setSelectedCustomer(emptyCustomer);
     };
 
     const [open, setOpen] = useState(false);
@@ -64,7 +70,7 @@ export default function CustomersPage() {
         <CustomerDialog 
             open={open}
             onClose={() => setOpen(false)}
-            onChange={handleChange}
+            onChange={handleInputChange}
             onSubmit={handleSubmit}
             customer={selectedCustomer}
         />

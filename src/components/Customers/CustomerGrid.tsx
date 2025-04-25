@@ -2,7 +2,7 @@ import { Customer } from '../../api/types';
 import { AgGridReact } from "ag-grid-react"
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Button } from '@mui/material';
 
 ModuleRegistry.registerModules([AllCommunityModule])

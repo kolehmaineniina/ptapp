@@ -92,8 +92,8 @@ export default function CustomerDialog(props: {
                 />                   
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.onClose}>Cancel</Button>
                     <Button type="submit" variant="contained">Save</Button>
+                    <Button onClick={props.onClose}>Cancel</Button>
                 </DialogActions>
             </Dialog>
         </div>
