@@ -12,4 +12,6 @@ export interface Customer {
         trainings?: { href: string };
       };
     }
+
+
   

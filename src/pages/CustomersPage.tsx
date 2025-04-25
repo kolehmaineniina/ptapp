@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button } from '@mui/material';
-import { fetchCustomers } from '../api/customers';
+import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/Customers/CustomerGrid';
 import CustomerDialog from '../components/Customers/CustomerDialog';
 import { Customer } from '../api/types';
@@ -24,29 +24,43 @@ export default function CustomersPage() {
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
 
     const handleDelete = (customer: Customer) => {
-        console.log("Delete:", customer);
+        deleteCustomer;
       };
       
     const handleEdit = (customer: Customer) => {
-        console.log("Edit:", customer);
+        setSelectedCustomer(customer);
+        setOpen(true);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("Dialog input handled")
+        if (!selectedCustomer) return;
+        setSelectedCustomer({...selectedCustomer, [event.target.name]: event.target.value
+        });
     };
 
-    const handleSubmit = () => {
-        
+    const handleSubmit = async () => {
+        if (selectedCustomer?._links?.self?.href) {
+           await putCustomer(selectedCustomer);
+        } else {
+           await postCustomer(selectedCustomer);
+        }
+        getCustomers();
+        setSelectedCustomer(emptyCustomer);
+        setOpen(false);
     };
 
     const [open, setOpen] = useState(false);
-    const { data, isLoading, error, isSuccess } = useQuery({queryKey: ['customers'], queryFn: fetchCustomers});
+    const { data, isLoading, error, isSuccess } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
     const customers = data?._embedded?.customers ?? [];
 
     return (
         <>
         <h2>Customers</h2>
-        <Button onClick={() => setOpen(true)}>Add Customer</Button>
+        <Button onClick={() => {
+            setSelectedCustomer(emptyCustomer),
+            setOpen(true)}}
+        >Add Customer
+        </Button>
         <CustomerDialog 
             open={open}
             onClose={() => setOpen(false)}
