@@ -33,6 +33,7 @@ export default function CustomerGrid(props: {
     return (
         <div style={{ height: 500 }}>
             <AgGridReact
+                editType="fullRow"
                 rowData={props.customers}
                 columnDefs={colDefs}
                 defaultColDef={

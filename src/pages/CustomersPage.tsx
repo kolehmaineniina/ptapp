@@ -24,12 +24,8 @@ export default function CustomersPage() {
 
     const queryClient = useQueryClient();
 
-    const refreshData = () => {
-        queryClient.invalidateQueries({ queryKey: ['customers'] });
-    }
-
-    const clenUp = () => {
-        
+    const refreshData = async () => {
+       await queryClient.invalidateQueries({ queryKey: ['customers'] });
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +55,15 @@ export default function CustomersPage() {
     const handleDelete = async (customer: Customer) => {
         if (!customer._links?.self.href) return;
 
-        deleteCustomer(customer._links.self.href);
-        refreshData();
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
         setSelectedCustomer(emptyCustomer);
+        deleteCustomer(customer._links.self.href);
+        setTimeout(() => {
+            refreshData();
+          }, 0);
     };
 
     const [open, setOpen] = useState(false);
