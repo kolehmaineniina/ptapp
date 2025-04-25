@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField} from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, TextField} from '@mui/material';
 import { Customer } from '../../api/types';
 
 export default function CustomerDialog(props: {

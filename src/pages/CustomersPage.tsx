@@ -73,11 +73,13 @@ export default function CustomersPage() {
     return (
         <>
         <h2>Customers</h2>
+
         <Button onClick={() => {
             setSelectedCustomer(emptyCustomer),
             setOpen(true)}}
         >Add Customer
         </Button>
+
         <CustomerDialog 
             open={open}
             onClose={() => setOpen(false)}
@@ -85,14 +87,29 @@ export default function CustomersPage() {
             onSubmit={handleSubmit}
             customer={selectedCustomer}
         />
-        { isLoading && <p>Loading customers...</p> }
-        { error && <p>Error loading customers: Error (error as Error)?.message</p> }
-        { isSuccess && 
-            <CustomerGrid 
-                customers={customers}
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-            />}
+
+        <Button
+            variant="outlined"
+            disabled={!selectedCustomer}
+            onClick={() => selectedCustomer && handleEdit(selectedCustomer)}
+        >
+        Edit
+        </Button>
+        
+        <Button
+            variant="outlined"
+            color="error"
+            disabled={!selectedCustomer}
+            onClick={() => selectedCustomer && handleDelete(selectedCustomer)}
+        >
+        Delete
+        </Button>
+
+        <CustomerGrid 
+            customers={customers}
+            onRowSelected={setSelectedCustomer}
+            isLoading={isLoading}
+        />
         </>
     )
 }
