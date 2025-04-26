@@ -5,13 +5,10 @@ import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/
 import CustomerGrid from '../components/Customers/CustomerGrid';
 import CustomerDialog from '../components/Customers/CustomerDialog';
 import { Customer } from '../api/types';
+import { getTrainingsById } from '../api/trainings';
 
 export default function CustomersPage() {
     
-    const { data, isLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
-    const customers = data?._embedded?.customers ?? [];
-    const queryClient = useQueryClient();
-
     const emptyCustomer: Customer = {
         id:"",
         firstname: '',
@@ -22,7 +19,8 @@ export default function CustomersPage() {
         postcode: '',
         city: '',
         _links: {
-            self: {href: ''}
+            self: {href: ''},
+            trainings: {href: ''}
         }
     }
 
@@ -30,7 +28,23 @@ export default function CustomersPage() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
 
-    const refreshData = async () => {
+    const { data: customerData, isLoading: customersLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
+    const customers = customerData?._embedded?.customers ?? [];
+    const queryClient = useQueryClient();
+
+    const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
+        queryKey: ['trainings', selectedCustomer?._links.trainings.href], 
+        queryFn: () => {
+            if (!selectedCustomer?._links.trainings.href) {
+                return;
+            }
+
+            return getTrainingsById(selectedCustomer._links.trainings.href);
+        }, enabled: !!selectedCustomer?._links.trainings.href && openDrawer
+    });
+    const trainings = trainingsData?._embedded?.trainings ?? [];
+
+    const refreshCustomers = async () => {
        await queryClient.invalidateQueries({ queryKey: ['customers'] });
     }
 
@@ -48,7 +62,7 @@ export default function CustomersPage() {
            await postCustomer(selectedCustomer);
         }
         
-        refreshData();
+        refreshCustomers();
         setSelectedCustomer(emptyCustomer);
         setOpenDialog(false);
     };
@@ -63,7 +77,7 @@ export default function CustomersPage() {
         setSelectedCustomer(emptyCustomer);
         deleteCustomer(customer._links.self.href);
         setTimeout(() => {
-            refreshData();
+            refreshCustomers();
           }, 0);
     };
 
@@ -105,7 +119,7 @@ export default function CustomersPage() {
 
         <CustomerGrid 
             customers={customers}
-            isLoading={isLoading}
+            isLoading={customersLoading}
             onRowSelected={(customer) => {
                 setSelectedCustomer(customer)
                 setOpenDrawer(true)
@@ -119,10 +133,9 @@ export default function CustomersPage() {
         >
             <div style={{ width: 400, padding: "1rem" }}>
                 <h2>{selectedCustomer?.firstname} {selectedCustomer?.lastname}'s Trainings</h2>
-                <ul>
-                    <li>Training 1 (placeholder)</li>
-                    <li>Training 2 (placeholder)</li>
-                    <li>Training 3 (placeholder)</li>
+                <ul> {trainings.map((t: any, i: number) => (
+                    <li key={i}>{t.date}: {t.activity} ({t.duration} mins)</li>                   
+                ))}
                 </ul>
                 <Button onClick={() => setOpenDrawer(false)} variant="outlined" style={{ marginTop: "1rem" }}>
                 Close
