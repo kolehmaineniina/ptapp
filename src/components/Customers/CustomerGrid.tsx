@@ -14,12 +14,19 @@ export default function CustomerGrid(props: {
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        {headerName: 'Select', headerCheckboxSelection: true, checkboxSelection: true, width: 50},   
-        {headerName: 'First Name', field: 'firstname', floatingFilter: true,},
-        {headerName: 'Last Name', field: 'lastname', floatingFilter: true,},
-        {headerName: 'Email', field: 'email'},
-        {headerName: 'Phone', field: 'phone'},
-        {headerName: 'Street Address', field: 'streetaddress'},
+        { headerCheckboxSelection: true, checkboxSelection: true, width: 30},
+        { headerName: 'ID', field: 'id', 
+          sortable: false, 
+          filter: true, 
+          floatingFilter: true,
+          width: 100,
+          cellStyle: { textAlign: 'center' }
+        },  
+        {headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true},
+        {headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true},
+        {headerName: 'Email', field: 'email', sortable: false},
+        {headerName: 'Phone', field: 'phone', sortable: false},
+        {headerName: 'Street Address', field: 'streetaddress', sortable: false},
         {headerName: 'Zip Code', field: 'postcode'},
         {headerName: 'City', field: 'city'}
     ], []);
@@ -58,7 +65,6 @@ export default function CustomerGrid(props: {
                 columnDefs={colDefs}
                 defaultColDef={
                     { sortable: true,
-                    filter: true,
                     resizable: true }
                 }
             />
