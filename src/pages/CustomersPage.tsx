@@ -120,10 +120,11 @@ export default function CustomersPage() {
         <CustomerGrid 
             customers={customers}
             isLoading={customersLoading}
-            onRowSelected={(customer) => {
+            onRowClicked={(customer) => {
                 setSelectedCustomer(customer)
                 setOpenDrawer(true)
             }}
+            onRowSelected={(customer) => setSelectedCustomer(customer)}
         />
         <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
         <Drawer

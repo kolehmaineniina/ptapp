@@ -1,6 +1,6 @@
 import { Customer } from '../../api/types';
 import { AgGridReact } from "ag-grid-react"
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
+import { AllCommunityModule, ModuleRegistry, RowDoubleClickedEvent } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
 import { useEffect, useMemo, useRef } from 'react';
 
@@ -10,7 +10,8 @@ ModuleRegistry.registerModules([AllCommunityModule])
 export default function CustomerGrid(props: {
     customers: Customer[],
     isLoading: boolean,
-    onRowSelected: (customer: Customer) => void,
+    onRowClicked: (customer: Customer) => void,
+    onRowSelected: (customer: Customer) => void
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
@@ -55,6 +56,11 @@ export default function CustomerGrid(props: {
 
       };
 
+    const handleDoubleClick = (event: RowDoubleClickedEvent<Customer>) => {
+        if (props.onRowClicked && event.data) {
+          props.onRowClicked(event.data)
+        }
+    }
 
     return (
         <div style={{ height: 500 }}>
@@ -62,6 +68,7 @@ export default function CustomerGrid(props: {
                 ref={gridRef}
                 rowSelection="single"
                 onSelectionChanged={handleRowSelection}
+                onRowDoubleClicked={handleDoubleClick}
                 rowData={props.customers}
                 columnDefs={colDefs}
                 defaultColDef={
