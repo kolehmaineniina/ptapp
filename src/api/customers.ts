@@ -8,8 +8,15 @@ export async function getCustomers() {
         throw new Error("Failed to fetch customers");
     }
 
-    return await response.json();
+    const json = await response.json();
     
+    const idCustomers = json._embedded.customers.map((c: Customer) => ({
+        ...c, id: c._links.self.href.split('/').pop()
+    }));
+
+    return {
+        ...json, _embedded: { customers: idCustomers}
+    };
 }
 
 export async function putCustomer(customer: Customer) {
