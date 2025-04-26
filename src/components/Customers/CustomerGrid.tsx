@@ -8,9 +8,9 @@ import { useEffect, useMemo, useRef } from 'react';
 ModuleRegistry.registerModules([AllCommunityModule])
 
 export default function CustomerGrid(props: {
-    customers: Customer[];
-    onRowSelected: (customer: Customer) => void
+    customers: Customer[],
     isLoading: boolean,
+    onRowSelected: (customer: Customer) => void,
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
@@ -22,13 +22,13 @@ export default function CustomerGrid(props: {
           width: 100,
           cellStyle: { textAlign: 'center' }
         },  
-        {headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true},
-        {headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true},
-        {headerName: 'Email', field: 'email', sortable: false},
-        {headerName: 'Phone', field: 'phone', sortable: false},
-        {headerName: 'Street Address', field: 'streetaddress', sortable: false},
-        {headerName: 'Zip Code', field: 'postcode'},
-        {headerName: 'City', field: 'city'}
+        { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true },
+        { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true },
+        { headerName: 'Email', field: 'email', sortable: false },
+        { headerName: 'Phone', field: 'phone', sortable: false },
+        { headerName: 'Street Address', field: 'streetaddress', sortable: false },
+        { headerName: 'Zip Code', field: 'postcode' },
+        { headerName: 'City', field: 'city' }
     ], []);
 
     const gridRef = useRef<AgGridReact<Customer>>(null);
@@ -54,6 +54,7 @@ export default function CustomerGrid(props: {
         }
 
       };
+
 
     return (
         <div style={{ height: 500 }}>

@@ -1,14 +1,19 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Drawer } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/Customers/CustomerGrid';
 import CustomerDialog from '../components/Customers/CustomerDialog';
 import { Customer } from '../api/types';
 
 export default function CustomersPage() {
-   
+    
+    const { data, isLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
+    const customers = data?._embedded?.customers ?? [];
+    const queryClient = useQueryClient();
+
     const emptyCustomer: Customer = {
+        id:"",
         firstname: '',
         lastname: '',
         phone: '',
@@ -20,9 +25,10 @@ export default function CustomersPage() {
             self: {href: ''}
         }
     }
-    const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
 
-    const queryClient = useQueryClient();
+    const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
 
     const refreshData = async () => {
        await queryClient.invalidateQueries({ queryKey: ['customers'] });
@@ -44,7 +50,7 @@ export default function CustomersPage() {
         
         refreshData();
         setSelectedCustomer(emptyCustomer);
-        setOpen(false);
+        setOpenDialog(false);
     };
 
     const handleDelete = async (customer: Customer) => {
@@ -61,9 +67,6 @@ export default function CustomersPage() {
           }, 0);
     };
 
-    const [open, setOpen] = useState(false);
-    const { data, isLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
-    const customers = data?._embedded?.customers ?? [];
 
     return (
         <>
@@ -71,13 +74,13 @@ export default function CustomersPage() {
 
         <Button onClick={() => {
             setSelectedCustomer(emptyCustomer),
-            setOpen(true)}}
+            setOpenDialog(true)}}
         >Add Customer
         </Button>
 
         <CustomerDialog 
-            open={open}
-            onClose={() => setOpen(false)}
+            open={openDialog}
+            onClose={() => setOpenDialog(false)}
             onChange={handleInputChange}
             onSubmit={handleSubmit}
             customer={selectedCustomer}
@@ -86,7 +89,7 @@ export default function CustomersPage() {
         <Button
             variant="outlined"
             disabled={!selectedCustomer}
-            onClick={() => setOpen(true)}
+            onClick={() => setOpenDialog(true)}
         >
         Edit
         </Button>
@@ -102,9 +105,30 @@ export default function CustomersPage() {
 
         <CustomerGrid 
             customers={customers}
-            onRowSelected={setSelectedCustomer}
             isLoading={isLoading}
+            onRowSelected={(customer) => {
+                setSelectedCustomer(customer)
+                setOpenDrawer(true)
+            }}
         />
+        <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
+        <Drawer
+            anchor="right"
+            open={openDrawer}
+            onClose={() => setOpenDrawer(false)}
+        >
+            <div style={{ width: 400, padding: "1rem" }}>
+                <h2>{selectedCustomer?.firstname} {selectedCustomer?.lastname}'s Trainings</h2>
+                <ul>
+                    <li>Training 1 (placeholder)</li>
+                    <li>Training 2 (placeholder)</li>
+                    <li>Training 3 (placeholder)</li>
+                </ul>
+                <Button onClick={() => setOpenDrawer(false)} variant="outlined" style={{ marginTop: "1rem" }}>
+                Close
+                </Button>
+            </div>
+        </Drawer>
         </>
     )
 }
