@@ -1,5 +1,6 @@
 import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { Customer, Training } from "../api/types";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerDrawer({open, onClose, customer, trainings}: {
     anchor: string;
@@ -9,6 +10,8 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
     trainings: Training[];
     isLoading: boolean;
     error: Error | null }) {
+
+    const navigate = useNavigate();
 
     return (
         <Drawer anchor="right" open={open} onClose={onClose}>
@@ -37,8 +40,8 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
                     variant="contained"
                     style={{ marginTop: "1rem" }}
                     fullWidth
-                    onClick={() => {}}
-                >Go to Profile
+                    onClick={() => navigate(`/customers/${customer.id}`)}
+                >View Full Profile
                 </Button>
             </div>
         </Drawer>

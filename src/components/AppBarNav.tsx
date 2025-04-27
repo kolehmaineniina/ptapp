@@ -14,7 +14,7 @@ export default function AppBarNav() {
         >
           <Button component={NavLink} to="/">Home</Button>
           <Button component={NavLink} to="/customers">Customers</Button>
-          <Button component={NavLink} to="/trainings">Trainings</Button>
+          <Button component={NavLink} to="/customers/:id">Trainings</Button>
         </Toolbar>
       </AppBar>
     </Box>
