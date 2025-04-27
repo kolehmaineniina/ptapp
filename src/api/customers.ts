@@ -57,3 +57,13 @@ export async function deleteCustomer(url: string) {
       throw new Error('Failed to delete customer');
     }
 }
+
+export async function getCustomerById(id: string) {
+    const url = `${baseUrl}/${id}`
+    const response = await fetch(url);
+    if(!response.ok) {
+        throw new Error("Failed to fetch customer by id")
+    }
+
+    return response.json();
+}
