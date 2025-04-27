@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button, Drawer } from '@mui/material';
+import { Button } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/Customers/CustomerGrid';
 import CustomerDialog from '../components/Customers/CustomerDialog';
@@ -129,7 +129,7 @@ export default function CustomersPage() {
         />
         <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
         <CustomerDrawer
-            anchor="right"
+            anchor={"right"}
             open={openDrawer}
             onClose={() => setOpenDrawer(false)}
             customer={selectedCustomer}

@@ -1,7 +1,7 @@
 import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import { Customer, Training } from "../../api/types";
 
-export default function CustomerDrawer({anchor, open, onClose, customer, trainings, isLoading, error}: {
+export default function CustomerDrawer({open, onClose, customer, trainings}: {
     anchor: string;
     open: boolean;
     onClose: () => void;
