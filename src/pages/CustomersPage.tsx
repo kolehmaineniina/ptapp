@@ -6,6 +6,7 @@ import CustomerGrid from '../components/Customers/CustomerGrid';
 import CustomerDialog from '../components/Customers/CustomerDialog';
 import { Customer } from '../api/types';
 import { getTrainingsById } from '../api/trainings';
+import CustomerDrawer from '../components/Customers/CustomerDrawer';
 
 export default function CustomersPage() {
     
@@ -127,22 +128,15 @@ export default function CustomersPage() {
             onRowSelected={(customer) => setSelectedCustomer(customer)}
         />
         <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
-        <Drawer
+        <CustomerDrawer
             anchor="right"
             open={openDrawer}
             onClose={() => setOpenDrawer(false)}
-        >
-            <div style={{ width: 400, padding: "1rem" }}>
-                <h2>{selectedCustomer?.firstname} {selectedCustomer?.lastname}'s Trainings</h2>
-                <ul> {trainings.map((t: any, i: number) => (
-                    <li key={i}>{t.date}: {t.activity} ({t.duration} mins)</li>                   
-                ))}
-                </ul>
-                <Button onClick={() => setOpenDrawer(false)} variant="outlined" style={{ marginTop: "1rem" }}>
-                Close
-                </Button>
-            </div>
-        </Drawer>
+            customer={selectedCustomer}
+            trainings={trainings}
+            isLoading={trainingsLoading}
+            error={trainingsError}
+        />
         </>
     )
 }

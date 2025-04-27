@@ -8,10 +8,10 @@ import { useEffect, useMemo, useRef } from 'react';
 ModuleRegistry.registerModules([AllCommunityModule])
 
 export default function CustomerGrid(props: {
-    customers: Customer[],
-    isLoading: boolean,
-    onRowClicked: (customer: Customer) => void,
-    onRowSelected: (customer: Customer) => void
+    customers: Customer[];
+    isLoading: boolean;
+    onRowClicked: (customer: Customer) => void;
+    onRowSelected: (customer: Customer) => void;
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
