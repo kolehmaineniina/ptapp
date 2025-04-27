@@ -1,4 +1,4 @@
-import { Customer } from '../../api/types';
+import { Customer } from '../api/types';
 import { AgGridReact } from "ag-grid-react"
 import { AllCommunityModule, ModuleRegistry, RowDoubleClickedEvent } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"

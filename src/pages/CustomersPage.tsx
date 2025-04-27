@@ -2,11 +2,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
-import CustomerGrid from '../components/Customers/CustomerGrid';
-import CustomerDialog from '../components/Customers/CustomerDialog';
+import CustomerGrid from '../components/CustomerGrid';
+import CustomerDialog from '../components/CustomerDialog';
 import { Customer } from '../api/types';
 import { getTrainingsById } from '../api/trainings';
-import CustomerDrawer from '../components/Customers/CustomerDrawer';
+import CustomerDrawer from '../components/CustomerDrawer';
 
 export default function CustomersPage() {
     

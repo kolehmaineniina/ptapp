@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogActions, Button, TextField} from '@mui/material';
-import { Customer } from '../../api/types';
+import { Customer } from '../api/types';
 
 export default function CustomerDialog(props: {
     open: boolean;
