@@ -2,8 +2,9 @@ import { Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCustomerById, putCustomer, postCustomer } from "../api/customers";
-import { useState } from "react";
+import { getCustomerById, putCustomer } from "../api/customers";
+import { useEffect, useState } from "react";
+import { Customer } from "../api/types";
 
 export default function CustomerProfile() {
     
@@ -24,22 +25,39 @@ export default function CustomerProfile() {
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
      }
 
+    const [originalCustomer, setOriginalCustomer] = useState<Customer | null>(null);
+    const [editedCustomer, setEditedCustomer] = useState<Customer | null>(null);
     const [editable, setEditable] = useState(false);
-    const [editedCustomer, setEditedCustomer] = useState(customer);
+
+    useEffect(() => {
+        if (customer) {
+            setEditedCustomer(customer);
+            setOriginalCustomer(customer);
+        }
+    }, [customer])     
     
-    const handleEdit = () => setEditable(true);
+    const handleEdit = () => {
+        setOriginalCustomer(editedCustomer);
+        setEditable(true);}
     
     const handleSave = async () => {
+        if (!editedCustomer) {
+            return
+        }
         await putCustomer(editedCustomer);
         await refreshCustomer();
         setEditable(false);
     };
 
     const handleCancel = () => {
+        if (originalCustomer) {
+            setEditedCustomer(originalCustomer)
+        }
         setEditable(false);
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!editedCustomer) return;
         const {name, value} = event.target;
         setEditedCustomer({...editedCustomer, [name]: value})
     };
@@ -47,11 +65,12 @@ export default function CustomerProfile() {
     if (isLoading) return <p>Loading customer...</p>;
     if (error) return <p>Error loading customer</p>;
     if (!customer) return <p>No customer found.</p>;
+    if (!editedCustomer) return <p>Loading customer data...</p>;
 
     return (
         <div>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
-            <Button onClick={handleEdit}>Edit</Button>
+            <Button>Back</Button>
             <CustomerCard 
                 customer={editedCustomer}
                 onChange={handleInputChange}
