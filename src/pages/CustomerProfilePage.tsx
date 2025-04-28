@@ -1,4 +1,4 @@
-import { Button, Collapse, Stack, Typography } from "@mui/material";
+import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -161,23 +161,27 @@ export default function CustomerProfile() {
                         )
                     }
                     />
-                <Stack direction="row" spacing={1}>
-                    <Typography variant="h6">Add Training</Typography>
-                    <Button 
-                        startIcon={ collapse ? <CloseIcon/> : <AddIcon/>}
-                        onClick={() => setCollapse(prev => !prev)}
-                        color={ collapse ? "error" : "primary"}
-                        sx={{'&:hover': {
-                            transform: 'scale(1.1)'}}
-                        }    
+                <Stack spacing={2}>
+                    <Typography variant="h5" gutterBottom>Trainings</Typography>
+                    <Stack direction="row">
+                        <Typography variant="h6" color="primary" >Add Training</Typography>
+                        <Button 
+                            startIcon={ collapse ? <CloseIcon/> : <AddIcon/>}
+                            onClick={() => setCollapse(prev => !prev)}
+                            color={ collapse ? "error" : "primary"}
+                            sx={{'&:hover': {
+                                transform: 'scale(1.1)'}}
+                            }    
+                        >
+                        </Button>
+                    </Stack>
+                    <Collapse
+                    in={collapse}
                     >
-                    </Button>
-                </Stack>
-                <Collapse
-                    in={collapse}>
-                    <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
-                </Collapse>
-                <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/>    
+                        <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
+                    </Collapse>
+                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/> 
+                </Stack>  
             </Stack>
         </div>
     )

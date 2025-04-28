@@ -10,7 +10,10 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
     /*CardContent: ReactNode*/
 }) {
 
+    const variant: 'outlined' | 'filled' = editable ? 'outlined' : 'filled';
+
     const fieldProps = {
+        variant: variant,
         onChange: onChange,
         slotProps: {
             input: {
@@ -24,7 +27,6 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
             <CardContent>
                 <Typography variant="h5" gutterBottom>Customer Information</Typography>
                 <Stack spacing={2}>
-                <Typography>{customer.firstname} {customer.lastname}, id: {customer.id}</Typography>
                     <>
                         <TextField
                             label="First Name"

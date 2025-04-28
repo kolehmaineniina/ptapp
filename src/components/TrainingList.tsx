@@ -9,7 +9,6 @@ export default function TrainingsList({trainings, onDelete: onDelete} : {
 
     return (
         <div>
-            <Typography variant="h5" gutterBottom>Trainings</Typography>
             <List>
             {trainings.map((training: Training) => (
                 <ListItem 
