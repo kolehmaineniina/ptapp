@@ -1,6 +1,6 @@
 import { Customer } from '../api/types';
 import { AgGridReact } from "ag-grid-react"
-import { AllCommunityModule, ModuleRegistry, RowClickedEvent, RowDoubleClickedEvent } from 'ag-grid-community'
+import { AllCommunityModule, ModuleRegistry, RowClickedEvent } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
 import { useEffect, useMemo, useRef } from 'react';
 

@@ -1,10 +1,12 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCustomerById, putCustomer } from "../api/customers";
 import { useEffect, useState } from "react";
 import { Customer } from "../api/types";
+import { getTrainingsById } from "../api/trainings";
+import TrainingsList from "../components/TrainingList";
 
 export default function CustomerProfile() {
     
@@ -25,6 +27,7 @@ export default function CustomerProfile() {
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
      }
 
+
     const [originalCustomer, setOriginalCustomer] = useState<Customer | null>(null);
     const [editedCustomer, setEditedCustomer] = useState<Customer | null>(null);
     const [editable, setEditable] = useState(false);
@@ -34,7 +37,19 @@ export default function CustomerProfile() {
             setEditedCustomer(customer);
             setOriginalCustomer(customer);
         }
-    }, [customer])     
+    }, [customer])    
+
+    const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
+        queryKey: ['trainings', editedCustomer?._links.trainings.href], 
+        queryFn: () => {
+            if (!editedCustomer?._links.trainings.href) {
+                return;
+            }
+
+            return getTrainingsById(editedCustomer._links.trainings.href);
+        }
+    });
+    const trainings = trainingsData?._embedded?.trainings ?? [];
     
     const handleEdit = () => {
         setOriginalCustomer(editedCustomer);
@@ -71,21 +86,30 @@ export default function CustomerProfile() {
         <div>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
             <Button>Back</Button>
-            <CustomerCard 
-                customer={editedCustomer}
-                onChange={handleInputChange}
-                editable={editable}
-                actions={
-                    editable ? (
-                      <>
-                        <Button onClick={handleSave}>Save</Button>
-                        <Button onClick={handleCancel}>Cancel</Button>
-                      </>
-                    ) : (
-                      <Button onClick={handleEdit}>Edit</Button>
-                    )
-                  }
-                />
+            <Stack spacing={2}>
+                <CustomerCard 
+                    customer={editedCustomer}
+                    onChange={handleInputChange}
+                    editable={editable}
+                    actions={
+                        editable ? (
+                        <>
+                            <Button onClick={handleSave}>Save</Button>
+                            <Button onClick={handleCancel}>Cancel</Button>
+                        </>
+                        ) : (
+                        <Button onClick={handleEdit}>Edit</Button>
+                        )
+                    }
+                    />
+                <Stack>
+                    <Button>Add session</Button>
+                    <TrainingsList trainings={trainings} />    
+                </Stack>
+                
+            </Stack>
+            
+            
         </div>
     )
 }
