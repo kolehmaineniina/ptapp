@@ -1,21 +1,30 @@
-import { List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { List, ListItem, ListItemText, Typography, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Training } from "../api/types";
 
-export default function TrainingsList({trainings/*, onDeleteTraining*/} : {
+export default function TrainingsList({trainings, onDelete: onDelete} : {
     trainings: Training[];
-    /*onDeleteTraining: () => void;*/
+    onDelete: (url:string) => void;
 }) {
 
     return (
         <div>
-            <Typography variant="h5" gutterBottom>Training Sessions</Typography>
+            <Typography variant="h5" gutterBottom>Trainings</Typography>
             <List>
             {trainings.map((training: Training) => (
-                <ListItem key={training.id}>
-                    <ListItemIcon></ListItemIcon>
-                    <ListItemText primary={`${training.activity}`}
-                        secondary={`${training.date}: ${training.duration} minutes`}/>
-                </ListItem>
+                <ListItem 
+                key={training.id}
+                secondaryAction={
+                    <IconButton edge="end" aria-label="delete" onClick={() => onDelete(training._links.self.href)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }
+                >
+                   <ListItemText
+                        primary={`${new Date(training.date).toLocaleDateString()} - ${training.activity}`}
+                        secondary={`${training.duration} minutes`}
+                    />
+            </ListItem>
             ))}
         </List>
         </div>

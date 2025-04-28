@@ -30,8 +30,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                             label="First Name"
                             name="firstname"
                             value={customer.firstname}
-                            onChange={onChange}
-                            inputProps={{readOnly: !editable}}
+                            {...fieldProps}
                         />
                         <TextField
                             label="Last Name"

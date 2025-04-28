@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCustomerById, putCustomer } from "../api/customers";
 import { useEffect, useState } from "react";
 import { Customer } from "../api/types";
-import { getTrainingsById } from "../api/trainings";
+import { getTrainings, deleteTraining, postTraining } from "../api/trainings";
 import TrainingsList from "../components/TrainingList";
 
 export default function CustomerProfile() {
@@ -14,7 +14,7 @@ export default function CustomerProfile() {
     const id = params.id 
     /* const { id } = use.Params()*/
     
-    const { data: customer, isLoading: isLoading, error: error } = useQuery({
+    const { data: customer, isLoading, error } = useQuery({
         queryKey: ['customer', id], 
         queryFn: () => {
             return id ? getCustomerById(id) : Promise.reject("No customer ID provided");
@@ -25,8 +25,11 @@ export default function CustomerProfile() {
     const queryClient = useQueryClient();
     const refreshCustomer = async () => {
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
-     }
+    }
 
+    const refreshTrainings = async () => {
+        await queryClient.invalidateQueries({ queryKey: ['trainings'] });
+    }
 
     const [originalCustomer, setOriginalCustomer] = useState<Customer | null>(null);
     const [editedCustomer, setEditedCustomer] = useState<Customer | null>(null);
@@ -46,7 +49,7 @@ export default function CustomerProfile() {
                 return;
             }
 
-            return getTrainingsById(editedCustomer._links.trainings.href);
+            return getTrainings(editedCustomer._links.trainings.href);
         }
     });
     const trainings = trainingsData?._embedded?.trainings ?? [];
@@ -77,6 +80,25 @@ export default function CustomerProfile() {
         setEditedCustomer({...editedCustomer, [name]: value})
     };
 
+    const handleTrainingDelete = async (trainingUrl: string) => {
+        try {
+            await deleteTraining(trainingUrl);
+            await refreshTrainings();  // This will be another simple query invalidation
+          } catch (error) {
+            console.error(error);
+          }
+    };
+    /*if (!trainingUrl) return;
+
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+
+    deleteTraining(trainingUrl);
+    setTimeout(() => {
+        refreshData();
+      }, 0);*/
+
     if (isLoading) return <p>Loading customer...</p>;
     if (error) return <p>Error loading customer</p>;
     if (!customer) return <p>No customer found.</p>;
@@ -103,13 +125,10 @@ export default function CustomerProfile() {
                     }
                     />
                 <Stack>
-                    <Button>Add session</Button>
-                    <TrainingsList trainings={trainings} />    
-                </Stack>
-                
+                    <Button>Add new</Button>
+                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/>    
+                </Stack>  
             </Stack>
-            
-            
         </div>
     )
 }

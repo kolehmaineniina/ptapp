@@ -5,7 +5,7 @@ import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerDialog';
 import { Customer } from '../api/types';
-import { getTrainingsById } from '../api/trainings';
+import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
 
 export default function CustomersPage() {
@@ -40,7 +40,7 @@ export default function CustomersPage() {
                 return;
             }
 
-            return getTrainingsById(selectedCustomer._links.trainings.href);
+            return getTrainings(selectedCustomer._links.trainings.href);
         }, enabled: !!selectedCustomer?._links.trainings.href && openDrawer
     });
     const trainings = trainingsData?._embedded?.trainings ?? [];

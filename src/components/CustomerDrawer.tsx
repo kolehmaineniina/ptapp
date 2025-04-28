@@ -1,4 +1,4 @@
-import { Button, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import { Button, Drawer, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,6 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
                 <List>
                     {trainings.map((training: Training) => (
                         <ListItem key={training.id}>
-                           <ListItemIcon></ListItemIcon>
                            <ListItemText primary={`${training.activity}`}
                                 secondary={`${training.date}: ${training.duration} minutes`}/>
                         </ListItem>
