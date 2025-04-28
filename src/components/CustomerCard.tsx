@@ -7,6 +7,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editable: boolean;
     actions: ReactNode;
+    /*content: ReactNode*/
 }) {
 
     const fieldProps = {
@@ -70,7 +71,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                     </>
                     </Stack>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: "flex-end" }}>
                     {actions}
                 </CardActions>
             </Card>
