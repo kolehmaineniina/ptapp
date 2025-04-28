@@ -20,8 +20,8 @@ export default function CustomerProfile() {
     })
 
     const queryClient = useQueryClient();
-    const refreshCustomers = async () => {
-        await queryClient.invalidateQueries({ queryKey: ['customers'] });
+    const refreshCustomer = async () => {
+        await queryClient.invalidateQueries({ queryKey: ['customer'] });
      }
 
     const [editable, setEditable] = useState(false);
@@ -30,13 +30,12 @@ export default function CustomerProfile() {
     const handleEdit = () => setEditable(true);
     
     const handleSave = async () => {
-        await putCustomer(customer);
-        await refreshCustomers();
+        await putCustomer(editedCustomer);
+        await refreshCustomer();
         setEditable(false);
     };
 
     const handleCancel = () => {
-        postCustomer(customer);
         setEditable(false);
     };
 
@@ -54,7 +53,7 @@ export default function CustomerProfile() {
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
             <Button onClick={handleEdit}>Edit</Button>
             <CustomerCard 
-                customer={customer}
+                customer={editedCustomer}
                 onChange={handleInputChange}
                 editable={editable}
                 actions={
