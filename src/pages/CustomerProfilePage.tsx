@@ -1,8 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
-import { useQuery } from "@tanstack/react-query";
-import { getCustomerById } from "../api/customers";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCustomerById, putCustomer, postCustomer } from "../api/customers";
 import { useState } from "react";
 
 export default function CustomerProfile() {
@@ -19,15 +19,35 @@ export default function CustomerProfile() {
         enabled: !!id,
     })
 
+    const queryClient = useQueryClient();
+    const refreshCustomers = async () => {
+        await queryClient.invalidateQueries({ queryKey: ['customers'] });
+     }
+
+    const [editable, setEditable] = useState(false);
+    const [editedCustomer, setEditedCustomer] = useState(customer);
+    
+    const handleEdit = () => setEditable(true);
+    
+    const handleSave = async () => {
+        await putCustomer(customer);
+        await refreshCustomers();
+        setEditable(false);
+    };
+
+    const handleCancel = () => {
+        postCustomer(customer);
+        setEditable(false);
+    };
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = event.target;
+        setEditedCustomer({...editedCustomer, [name]: value})
+    };
+
     if (isLoading) return <p>Loading customer...</p>;
     if (error) return <p>Error loading customer</p>;
     if (!customer) return <p>No customer found.</p>;
-
-    const [editable, setEditable] = useState(false);
-    const handleEdit = () => setEditable(true);
-    const handleSave = () => {};
-    const handleCancel = () => {};
-    const handleChange = () => {};
 
     return (
         <div>
@@ -35,7 +55,7 @@ export default function CustomerProfile() {
             <Button onClick={handleEdit}>Edit</Button>
             <CustomerCard 
                 customer={customer}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 editable={editable}
                 actions={
                     editable ? (

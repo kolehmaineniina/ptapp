@@ -15,7 +15,7 @@ export default function CustomerGrid(props: {
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        { headerCheckboxSelection: true, checkboxSelection: true, width: 30},
+        { checkboxSelection: true, width: 30},
         { headerName: 'ID', field: 'id', 
           sortable: false, 
           filter: true, 

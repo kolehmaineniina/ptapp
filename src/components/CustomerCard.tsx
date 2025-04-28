@@ -7,7 +7,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     editable: boolean;
     actions: ReactNode;
-    /*content: ReactNode*/
+    /*CardContent: ReactNode*/
 }) {
 
     const fieldProps = {
@@ -30,7 +30,8 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                             label="First Name"
                             name="firstname"
                             value={customer.firstname}
-                            {...fieldProps}
+                            onChange={onChange}
+                            inputProps={{readOnly: !editable}}
                         />
                         <TextField
                             label="Last Name"
