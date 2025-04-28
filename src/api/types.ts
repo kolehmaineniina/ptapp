@@ -9,7 +9,7 @@ export interface Customer {
     city: string;
     _links: {
         self: { href: string };
-        customer: { href: string };
+        customer?: { href: string };
         trainings: { href: string };
       };
     }
@@ -36,6 +36,13 @@ export interface Customer {
       customer: { href: string };
     };
     customer: TrainingCustomer;
+  }
+
+  export interface TrainingPost {
+    date: string,
+    activity: string,
+    duration: number,
+    customer: string | null
   }
 
 

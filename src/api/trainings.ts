@@ -1,4 +1,4 @@
-import { Training } from "./types";
+import { TrainingPost } from "./types";
 
 const baseUrl = "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/"
 
@@ -21,7 +21,7 @@ export async function deleteTraining(url: string) {
     }
 }
 
-export async function postTraining(training: Training) {
+export async function postTraining(training: TrainingPost) {
     const response = await fetch(baseUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

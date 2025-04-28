@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Collapse, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { Customer } from "../api/types";
 import { getTrainings, deleteTraining, postTraining } from "../api/trainings";
 import TrainingsList from "../components/TrainingList";
+import TrainingForm from "../components/TrainingForm";
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function CustomerProfile() {
     
@@ -27,10 +30,6 @@ export default function CustomerProfile() {
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
     }
 
-    const refreshTrainings = async () => {
-        await queryClient.invalidateQueries({ queryKey: ['trainings'] });
-    }
-
     const [originalCustomer, setOriginalCustomer] = useState<Customer | null>(null);
     const [editedCustomer, setEditedCustomer] = useState<Customer | null>(null);
     const [editable, setEditable] = useState(false);
@@ -42,18 +41,6 @@ export default function CustomerProfile() {
         }
     }, [customer])    
 
-    const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
-        queryKey: ['trainings', editedCustomer?._links.trainings.href], 
-        queryFn: () => {
-            if (!editedCustomer?._links.trainings.href) {
-                return;
-            }
-
-            return getTrainings(editedCustomer._links.trainings.href);
-        }
-    });
-    const trainings = trainingsData?._embedded?.trainings ?? [];
-    
     const handleEdit = () => {
         setOriginalCustomer(editedCustomer);
         setEditable(true);}
@@ -80,15 +67,33 @@ export default function CustomerProfile() {
         setEditedCustomer({...editedCustomer, [name]: value})
     };
 
-    const handleTrainingDelete = async (trainingUrl: string) => {
-        try {
-            await deleteTraining(trainingUrl);
-            await refreshTrainings();  // This will be another simple query invalidation
-          } catch (error) {
-            console.error(error);
-          }
+    const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
+        queryKey: ['trainings', editedCustomer?._links.trainings.href], 
+        queryFn: () => {
+            if (!editedCustomer?._links.trainings.href) {
+                return;
+            }
+
+            return getTrainings(editedCustomer._links.trainings.href);
+        }
+    });
+
+    const trainings = trainingsData?._embedded?.trainings ?? [];
+
+    const refreshTrainings = async () => {
+        await queryClient.invalidateQueries({ queryKey: ['trainings'] });
+    }
+
+    const emptyTraining = {
+        date: '',
+        activity: '',
+        duration: 0,
+        customer: null
     };
-    /*if (!trainingUrl) return;
+
+    const [newTraining, setNewTraining] = useState(emptyTraining);
+
+    /*
 
     if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
@@ -96,8 +101,40 @@ export default function CustomerProfile() {
 
     deleteTraining(trainingUrl);
     setTimeout(() => {
-        refreshData();
-      }, 0);*/
+        refreshTrainings();
+      }, 0);
+    */
+
+    const handleTrainingInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setNewTraining({
+            ...newTraining,
+            [name]: value
+        });
+    };
+
+    const handleAddTraining = async () => {
+        if (!editedCustomer?._links?.self?.href) return;
+
+        try {
+            await postTraining({...newTraining, [customer]: editedCustomer._links.self.href});
+            await refreshTrainings(); 
+            setNewTraining(emptyTraining);
+        } catch (error) {
+            console.error("Failed to add training:", error);
+        } 
+    };
+
+    const handleTrainingDelete = async (trainingUrl: string) => {
+        try {
+            await deleteTraining(trainingUrl);
+            await refreshTrainings();
+          } catch (error) {
+            console.error(error);
+          }
+    };
+
+    const [collapse, setCollapse] = useState(false);
 
     if (isLoading) return <p>Loading customer...</p>;
     if (error) return <p>Error loading customer</p>;
@@ -124,10 +161,23 @@ export default function CustomerProfile() {
                         )
                     }
                     />
-                <Stack>
-                    <Button>Add new</Button>
-                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/>    
-                </Stack>  
+                <Stack direction="row" spacing={1}>
+                    <Typography variant="h6">Add Training</Typography>
+                    <Button 
+                        startIcon={ collapse ? <CloseIcon/> : <AddIcon/>}
+                        onClick={() => setCollapse(prev => !prev)}
+                        color={ collapse ? "error" : "primary"}
+                        sx={{'&:hover': {
+                            transform: 'scale(1.1)'}}
+                        }    
+                    >
+                    </Button>
+                </Stack>
+                <Collapse
+                    in={collapse}>
+                    <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
+                </Collapse>
+                <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/>    
             </Stack>
         </div>
     )

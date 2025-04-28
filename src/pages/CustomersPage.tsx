@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerDialog';
@@ -85,14 +85,7 @@ export default function CustomersPage() {
 
     return (
         <>
-        <h2>Customers</h2>
-
-        <Button onClick={() => {
-            setSelectedCustomer(emptyCustomer),
-            setOpenDialog(true)}}
-        >Add Customer
-        </Button>
-
+        <Typography variant='h4'>Customers</Typography>
         <CustomerDialog 
             open={openDialog}
             onClose={() => setOpenDialog(false)}
@@ -102,11 +95,11 @@ export default function CustomersPage() {
         />
 
         <Button
-            variant="outlined"
-            disabled={!selectedCustomer}
-            onClick={() => setOpenDialog(true)}
-        >
-        Edit
+            variant='outlined'
+            onClick={() => {
+                setSelectedCustomer(emptyCustomer),
+                setOpenDialog(true)}}
+        >Add
         </Button>
 
         <Button
@@ -127,7 +120,6 @@ export default function CustomersPage() {
             }}
             onRowSelected={(customer) => setSelectedCustomer(customer)}
         />
-        <Button onClick={() => setOpenDrawer(true)}>Open Drawer</Button>
         <CustomerDrawer
             anchor={"right"}
             open={openDrawer}
