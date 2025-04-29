@@ -9,12 +9,15 @@ import { getTrainings, deleteTraining, postTraining } from "../api/trainings";
 import TrainingsList from "../components/TrainingList";
 import TrainingForm from "../components/TrainingForm";
 import { ArrowBack, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerProfile() {
     
     const params = useParams<{ id: string }>()
     const id = params.id 
     /* const { id } = use.Params()*/
+
+    const navigate = useNavigate();
     
     const { data: customer, isLoading, error } = useQuery({
         queryKey: ['customer', id], 
@@ -145,7 +148,7 @@ export default function CustomerProfile() {
     return (
         <div>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
-            <Button startIcon={<ArrowBack/>}>Back</Button>
+            <Button startIcon={<ArrowBack/>} onClick={() => navigate('/customers')}>Back</Button>
             <Stack spacing={2}>
                 <CustomerCard 
                     customer={editedCustomer}

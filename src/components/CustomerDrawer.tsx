@@ -1,6 +1,7 @@
 import { Button, Drawer, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
+import TrainingsList from "./TrainingList";
 
 export default function CustomerDrawer({open, onClose, customer, trainings}: {
     anchor: string;
@@ -16,17 +17,11 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
     return (
         <Drawer anchor="right" open={open} onClose={onClose}>
             <div style={{ width: 400, padding: "1rem" }}>
+                <Typography variant='subtitle1'>{customer.firstname} {customer.lastname}</Typography>
                 <Typography variant="h5">
-                    {customer.firstname} {customer.lastname}'s Trainings
+                    Trainings
                 </Typography>
-                <List>
-                    {trainings.map((training: Training) => (
-                        <ListItem key={training.id}>
-                           <ListItemText primary={`${training.activity}`}
-                                secondary={`${training.date}: ${training.duration} minutes`}/>
-                        </ListItem>
-                    ))}
-                </List>
+                <TrainingsList trainings={trainings} onDelete={onClose}/>
                 <Button
                     onClick={onClose}
                     variant="outlined"
