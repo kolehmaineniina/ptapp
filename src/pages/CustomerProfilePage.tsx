@@ -8,9 +8,7 @@ import { Customer } from "../api/types";
 import { getTrainings, deleteTraining, postTraining } from "../api/trainings";
 import TrainingsList from "../components/TrainingList";
 import TrainingForm from "../components/TrainingForm";
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, ExpandLess, ExpandMore } from "@mui/icons-material";
 
 export default function CustomerProfile() {
     
@@ -166,18 +164,15 @@ export default function CustomerProfile() {
                     />
                 <Stack spacing={2}>
                     <Typography variant="h5" gutterBottom>Trainings</Typography>
-                    <Stack direction="row">
-                        <Typography variant="h6" color="primary" >Add Training</Typography>
-                        <Button 
-                            startIcon={ collapse ? <CloseIcon/> : <AddIcon/>}
-                            onClick={() => setCollapse(prev => !prev)}
-                            color={ collapse ? "error" : "primary"}
-                            sx={{'&:hover': {
-                                transform: 'scale(1.1)'}}
-                            }    
-                        >
-                        </Button>
-                    </Stack>
+                    <Button 
+                        startIcon={ collapse ? <ExpandLess/> : <ExpandMore/>}
+                        onClick={() => setCollapse(prev => !prev)}
+                        color={ collapse ? "error" : "primary"}
+                        sx={{'&:hover': {
+                            transform: 'scale(1.1)'}}
+                        }    
+                    > { collapse ? "Collapse" : "Add new training"}
+                    </Button>
                     <Collapse
                     in={collapse}
                     >
