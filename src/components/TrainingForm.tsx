@@ -1,15 +1,14 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import { TrainingPost } from "../api/types";
+import { Button, Stack, TextField } from "@mui/material";
+import { TrainingToPost } from "../api/types";
 
 export default function TrainingForm({ training, onChange, onSubmit,
 }: {
-    training: TrainingPost;
+    training: TrainingToPost;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: () => void;
 }) {
     return (
         <Stack spacing={2}>
-        
         <TextField
             label="Date"
             type="text"
@@ -34,7 +33,7 @@ export default function TrainingForm({ training, onChange, onSubmit,
             onChange={onChange}
             fullWidth
         />
-        <Button variant="contained" onClick={onSubmit}>Save Training</Button>
+        <Button variant="contained" onClick={onSubmit} disabled={!training.date || !training.activity || Number(training.duration) <= 0}>Save Training</Button>
         </Stack>
     )
 }

@@ -38,11 +38,11 @@ export interface Customer {
     customer: TrainingCustomer;
   }
 
-  export interface TrainingPost {
+  export interface TrainingToPost {
     date: string,
     activity: string,
     duration: number,
-    customer: string | null
+    customer?: string,
   }
 
 

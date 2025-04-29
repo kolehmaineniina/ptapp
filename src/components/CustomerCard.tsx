@@ -26,6 +26,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
         <Card>
             <CardContent>
                 <Typography variant="h5" gutterBottom>Customer Information</Typography>
+                <h2>{customer._links.trainings.href}</h2>
                 <Stack spacing={2}>
                     <>
                         <TextField

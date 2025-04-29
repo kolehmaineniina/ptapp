@@ -1,6 +1,6 @@
-import { TrainingPost } from "./types";
+import { TrainingToPost } from "./types";
 
-const baseUrl = "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/"
+const trainingsUrl = "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings";
 
 export async function getTrainings(url: string) {
     const response = await fetch(url);
@@ -21,8 +21,8 @@ export async function deleteTraining(url: string) {
     }
 }
 
-export async function postTraining(training: TrainingPost) {
-    const response = await fetch(baseUrl, {
+export async function postTraining(training: TrainingToPost) {
+    const response = await fetch(trainingsUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(training)

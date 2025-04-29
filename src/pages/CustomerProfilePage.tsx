@@ -1,4 +1,4 @@
-import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
+import { Button, Collapse, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import TrainingsList from "../components/TrainingList";
 import TrainingForm from "../components/TrainingForm";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import { ArrowBack } from "@mui/icons-material";
 
 export default function CustomerProfile() {
     
@@ -27,6 +28,10 @@ export default function CustomerProfile() {
 
     const queryClient = useQueryClient();
     const refreshCustomer = async () => {
+        if (!editedCustomer?._links?.trainings?.href) {
+            console.error('Cannot refresh trainings: missing customer training link');
+            return;
+          }
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
     }
 
@@ -67,7 +72,7 @@ export default function CustomerProfile() {
         setEditedCustomer({...editedCustomer, [name]: value})
     };
 
-    const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
+    const { data: trainingsData } = useQuery({
         queryKey: ['trainings', editedCustomer?._links.trainings.href], 
         queryFn: () => {
             if (!editedCustomer?._links.trainings.href) {
@@ -75,38 +80,29 @@ export default function CustomerProfile() {
             }
 
             return getTrainings(editedCustomer._links.trainings.href);
-        }
+        }, enabled: !!editedCustomer?._links.trainings.href,
     });
 
     const trainings = trainingsData?._embedded?.trainings ?? [];
 
     const refreshTrainings = async () => {
-        await queryClient.invalidateQueries({ queryKey: ['trainings'] });
+        if (editedCustomer?._links.trainings.href) {
+            await queryClient.invalidateQueries({ 
+                queryKey: ['trainings', editedCustomer._links.trainings.href] });
+        }
     }
 
     const emptyTraining = {
         date: '',
         activity: '',
         duration: 0,
-        customer: null
     };
 
     const [newTraining, setNewTraining] = useState(emptyTraining);
 
-    /*
-
-    if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-    }
-
-    deleteTraining(trainingUrl);
-    setTimeout(() => {
-        refreshTrainings();
-      }, 0);
-    */
-
     const handleTrainingInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
+
         setNewTraining({
             ...newTraining,
             [name]: value
@@ -114,12 +110,19 @@ export default function CustomerProfile() {
     };
 
     const handleAddTraining = async () => {
-        if (!editedCustomer?._links?.self?.href) return;
-
+        if (!editedCustomer?._links?.self?.href) {
+            return;}
+        
+        const trainingToSend = {
+            date: new Date(newTraining.date).toISOString(), 
+            activity: newTraining.activity,
+            duration: Number(newTraining.duration), 
+            customer: editedCustomer._links.self.href
+        };
         try {
-            await postTraining({...newTraining, [customer]: editedCustomer._links.self.href});
+            await postTraining(trainingToSend);
             await refreshTrainings(); 
-            setNewTraining(emptyTraining);
+            setNewTraining(emptyTraining); 
         } catch (error) {
             console.error("Failed to add training:", error);
         } 
@@ -144,7 +147,7 @@ export default function CustomerProfile() {
     return (
         <div>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
-            <Button>Back</Button>
+            <Button startIcon={<ArrowBack/>}>Back</Button>
             <Stack spacing={2}>
                 <CustomerCard 
                     customer={editedCustomer}
