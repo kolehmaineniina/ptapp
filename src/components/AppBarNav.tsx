@@ -1,10 +1,10 @@
-import{ AppBar, Box, Button, Toolbar } from '@mui/material';
+import{ AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 export default function AppBarNav() {
   return (
     <Box>
-      <AppBar>
+      <AppBar position='fixed'>
         <Toolbar
           sx={{
             '& .MuiButton-root': {
@@ -12,11 +12,14 @@ export default function AppBarNav() {
             },
           }}
         >
+          <Typography variant='h5' >
+            Persomal Trainer App
+          </Typography>
           <Button component={NavLink} to="/">Home</Button>
           <Button component={NavLink} to="/customers">Customers</Button>
-          <Button component={NavLink} to="/customers/:id">Trainings</Button>
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </Box>
   )
 }
