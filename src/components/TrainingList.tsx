@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Typography, IconButton } from "@mui/material";
+import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Training } from "../api/types";
 

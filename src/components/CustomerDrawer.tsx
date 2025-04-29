@@ -1,4 +1,4 @@
-import { Button, Drawer, List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Button, Drawer, Typography } from "@mui/material";
 import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";

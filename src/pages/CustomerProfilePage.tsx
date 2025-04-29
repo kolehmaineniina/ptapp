@@ -10,6 +10,7 @@ import TrainingsList from "../components/TrainingList";
 import TrainingForm from "../components/TrainingForm";
 import { ArrowBack, ExpandLess, ExpandMore } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import AppSnackbar from "../components/AppSnackBar";
 
 export default function CustomerProfile() {
     
@@ -55,9 +56,24 @@ export default function CustomerProfile() {
         if (!editedCustomer) {
             return
         }
-        await putCustomer(editedCustomer);
-        await refreshCustomer();
-        setEditable(false);
+
+        try {
+            await putCustomer(editedCustomer);
+            setSnackbar({
+                open: true,
+                message: "Customer saved",
+                severity: "success",
+            });
+            await refreshCustomer();
+            setEditable(false);
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: "Save failed",
+                severity: "error",
+              });
+        }
+        
     };
 
     const handleCancel = () => {
@@ -122,10 +138,20 @@ export default function CustomerProfile() {
         };
         try {
             await postTraining(trainingToSend);
-            await refreshTrainings(); 
-            setNewTraining(emptyTraining); 
+            setSnackbar({
+                open: true,
+                message: "Training added",
+                severity: "success",
+            });
+            await refreshTrainings();
+            setNewTraining(emptyTraining);
+
         } catch (error) {
-            console.error("Failed to add training:", error);
+            setSnackbar({
+                open: true,
+                message: "Adding failed",
+                severity: "error",
+            })
         } 
     };
 
@@ -139,6 +165,7 @@ export default function CustomerProfile() {
     };
 
     const [collapse, setCollapse] = useState(false);
+    const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
     if (isLoading) return <p>Loading customer...</p>;
     if (error) return <p>Error loading customer</p>;
@@ -146,44 +173,49 @@ export default function CustomerProfile() {
     if (!editedCustomer) return <p>Loading customer data...</p>;
 
     return (
-        <div>
+ 
+        <Stack spacing={2}>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
             <Button startIcon={<ArrowBack/>} onClick={() => navigate('/customers')}>Back</Button>
-            <Stack spacing={2}>
-                <CustomerCard 
-                    customer={editedCustomer}
-                    onChange={handleInputChange}
-                    editable={editable}
-                    actions={
-                        editable ? (
-                        <>
-                            <Button onClick={handleSave}>Save</Button>
-                            <Button onClick={handleCancel}>Cancel</Button>
-                        </>
-                        ) : (
-                        <Button onClick={handleEdit}>Edit</Button>
-                        )
-                    }
-                    />
+            <CustomerCard 
+                customer={editedCustomer}
+                onChange={handleInputChange}
+                editable={editable}
+                actions={
+                    editable ? (
+                    <>
+                        <Button onClick={handleSave}>Save</Button>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                    </>
+                    ) : (
+                    <Button onClick={handleEdit}>Edit</Button>
+                    )
+                }
+                />
                 <Stack spacing={2}>
                     <Typography variant="h5" gutterBottom>Trainings</Typography>
                     <Button 
                         startIcon={ collapse ? <ExpandLess/> : <ExpandMore/>}
                         onClick={() => setCollapse(prev => !prev)}
-                        color={ collapse ? "error" : "primary"}
+                        color="primary"
                         sx={{'&:hover': {
                             transform: 'scale(1.1)'}}
                         }    
                     > { collapse ? "Collapse" : "Add new training"}
                     </Button>
                     <Collapse
-                    in={collapse}
+                        in={collapse}
                     >
                         <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
                     </Collapse>
                     <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/> 
-                </Stack>  
-            </Stack>
-        </div>
+                </Stack> 
+                <AppSnackbar
+                    open={snackbar.open}
+                    message={snackbar.message}
+                    severity={snackbar.severity}
+                    onClose={() => setSnackbar({ ...snackbar, open: false })}
+                />
+        </Stack>
     )
 }
