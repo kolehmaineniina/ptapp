@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button, ButtonGroup, Stack, Typography } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
@@ -8,6 +8,8 @@ import { Customer } from '../api/types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
 import CustomerInputDialog from '../components/CustomerInputDialog';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function CustomersPage() {
     
@@ -93,7 +95,7 @@ export default function CustomersPage() {
     }
 
     return (
-        <>
+        <Stack spacing={1}>
         <Typography variant='h4'>Customers</Typography>
         <CustomerDialog 
             open={openForm}
@@ -101,25 +103,29 @@ export default function CustomersPage() {
             onChange={handleInputChange}
             onSubmit={handleSubmit}
             customer={selectedCustomer}
-        />
-
+        /> 
+        <Stack justifyContent="space-between" spacing={0.5} >
         <Button
-            variant='outlined'
-            onClick={() => {
-                setSelectedCustomer(emptyCustomer),
-                setOpenForm(true)}}
-        >Add
+                startIcon={<AddIcon />}
+                sx={{ px: 3 }}
+                onClick={() => {
+                    setSelectedCustomer(emptyCustomer),
+                    setOpenForm(true)}}
+                    size='large'
+                    variant='outlined'
+            >New Customer
+            </Button>
+            <Button
+                sx={{ px: 3 }}
+                color="error"
+                variant='outlined'
+                startIcon={<DeleteIcon />}
+                disabled={!selectedCustomer}
+                onClick={() => selectedCustomer && handleDelete(selectedCustomer)}
+            >
+            Customer
         </Button>
-
-        <Button
-            variant="outlined"
-            color="error"
-            disabled={!selectedCustomer}
-            onClick={() => selectedCustomer && handleDelete(selectedCustomer)}
-        >
-        Delete
-        </Button>
-
+        </Stack>
         <CustomerGrid 
             customers={customers}
             isLoading={customersLoading}
@@ -143,7 +149,8 @@ export default function CustomersPage() {
             open={openDialog}
             onClose={() => setOpenDialog(false)}
             onConfirm={handleConfirmation}
+            customerName={`${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`}
         />
-        </>
+        </Stack>
     )
 }

@@ -176,7 +176,12 @@ export default function CustomerProfile() {
  
         <Stack spacing={2}>
             <Typography variant='h4' gutterBottom>Customer Profile</Typography>
-            <Button startIcon={<ArrowBack/>} onClick={() => navigate('/customers')}>Back</Button>
+            <Button 
+                startIcon={<ArrowBack/>} 
+                onClick={() => navigate('/customers')}
+                sx={{alignSelf:"flex-start"}}
+                >Back
+            </Button>
             <CustomerCard 
                 customer={editedCustomer}
                 onChange={handleInputChange}
@@ -188,17 +193,18 @@ export default function CustomerProfile() {
                         <Button onClick={handleCancel}>Cancel</Button>
                     </>
                     ) : (
-                    <Button onClick={handleEdit}>Edit</Button>
+                    <Button onClick={handleEdit} variant="contained">Edit</Button>
                     )
                 }
                 />
                 <Stack spacing={2}>
-                    <Typography variant="h5" gutterBottom>Trainings</Typography>
+                    <Typography variant="h5">Trainings</Typography>
                     <Button 
                         startIcon={ collapse ? <ExpandLess/> : <ExpandMore/>}
                         onClick={() => setCollapse(prev => !prev)}
                         color="primary"
-                        sx={{'&:hover': {
+                        sx={{alignSelf:"flex-start",
+                            '&:hover': {
                             transform: 'scale(1.1)'}}
                         }    
                     > { collapse ? "Collapse" : "Add new training"}

@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, IconButton } from "@mui/material";
+import { List, ListItem, ListItemText, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Training } from "../api/types";
 
@@ -10,6 +10,7 @@ export default function TrainingsList({trainings, onDelete, showDelete} : {
 
     return (
         <div>
+            {trainings.length > 1 ? (
             <List>
             {trainings.map((training: Training) => (
                 <ListItem 
@@ -27,7 +28,10 @@ export default function TrainingsList({trainings, onDelete, showDelete} : {
                     />
             </ListItem>
             ))}
-        </List>
+        </List> ) : (
+            <Typography variant="body2">No trainings to show</Typography>
+        )
+}
         </div>
         
     )

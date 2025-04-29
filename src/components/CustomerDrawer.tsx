@@ -1,7 +1,8 @@
-import { Button, Drawer, Typography } from "@mui/material";
+import { Avatar, Button, Divider, Drawer, Stack, Typography } from "@mui/material";
 import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";
+import { Delete, Close } from "@mui/icons-material";
 
 export default function CustomerDrawer({open, onClose, onDelete, customer, trainings}: {
     anchor: string;
@@ -16,35 +17,42 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
     const navigate = useNavigate();
 
     return (
+        
         <Drawer anchor="right" open={open} onClose={onClose}>
-            <div style={{ width: 400, padding: "1rem" }}>
-                <Typography variant='subtitle1'>{customer.firstname} {customer.lastname}</Typography>
-                <Typography variant="h5">
-                    Trainings
-                </Typography>
-                <TrainingsList trainings={trainings} onDelete={onClose} showDelete={false}/>
+            <Stack sx={{width:350, px:4}} spacing={2}>
                 <Button
+                    startIcon={<Close/>}
                     onClick={onClose}
-                    variant="outlined"
-                    style={{ marginTop: "1rem" }}
-                    fullWidth
-                >Close
-                </Button>
+                    sx={{alignSelf:"flex-start"}}
+                ></Button>
+                <Stack spacing={1} alignItems="center">
+                    <Avatar sx={{ width: 80, height: 80 }}>
+                        {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
+                    </Avatar>
+                    <Typography variant="h6">{customer.firstname} {customer.lastname}</Typography>
+                    <Typography variant="body2">ID: {customer.id}</Typography>
+                </Stack>
+                <Divider />
+                <Typography variant="h5">Trainings</Typography>
+                    <TrainingsList trainings={trainings} onDelete={onClose} showDelete={false}/>
+                <Divider/>
+                <Stack spacing={1}>
                 <Button
                     color="primary"
                     variant="contained"
-                    style={{ marginTop: "1rem" }}
                     fullWidth
                     onClick={() => navigate(`/customers/${customer.id}`)}
                 >View Full Profile
                 </Button>
                 <Button 
-                    variant="outlined" 
+                    startIcon={<Delete/>}
                     color="error" 
                     onClick={() => onDelete(customer)}
+                    fullWidth
                 >Delete Customer
                 </Button>
-            </div>
+                </Stack>
+            </Stack>
         </Drawer>
     )
 }
