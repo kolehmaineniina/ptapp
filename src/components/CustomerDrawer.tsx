@@ -3,10 +3,11 @@ import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";
 
-export default function CustomerDrawer({open, onClose, customer, trainings}: {
+export default function CustomerDrawer({open, onClose, onDelete, customer, trainings}: {
     anchor: string;
     open: boolean;
     onClose: () => void;
+    onDelete: (customer: Customer) => void;
     customer: Customer;
     trainings: Training[];
     isLoading: boolean;
@@ -21,7 +22,7 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
                 <Typography variant="h5">
                     Trainings
                 </Typography>
-                <TrainingsList trainings={trainings} onDelete={onClose}/>
+                <TrainingsList trainings={trainings} onDelete={onClose} showDelete={false}/>
                 <Button
                     onClick={onClose}
                     variant="outlined"
@@ -36,6 +37,12 @@ export default function CustomerDrawer({open, onClose, customer, trainings}: {
                     fullWidth
                     onClick={() => navigate(`/customers/${customer.id}`)}
                 >View Full Profile
+                </Button>
+                <Button 
+                    variant="outlined" 
+                    color="error" 
+                    onClick={() => onDelete(customer)}
+                >Delete Customer
                 </Button>
             </div>
         </Drawer>

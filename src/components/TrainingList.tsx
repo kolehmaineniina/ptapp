@@ -2,9 +2,10 @@ import { List, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Training } from "../api/types";
 
-export default function TrainingsList({trainings, onDelete: onDelete} : {
+export default function TrainingsList({trainings, onDelete, showDelete} : {
     trainings: Training[];
     onDelete: (url:string) => void;
+    showDelete: boolean;
 }) {
 
     return (
@@ -14,6 +15,7 @@ export default function TrainingsList({trainings, onDelete: onDelete} : {
                 <ListItem 
                 key={training.id}
                 secondaryAction={
+                    showDelete &&
                     <IconButton edge="end" aria-label="delete" onClick={() => onDelete(training._links.self.href)}>
                       <DeleteIcon />
                     </IconButton>

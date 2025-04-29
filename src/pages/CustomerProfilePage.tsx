@@ -208,7 +208,7 @@ export default function CustomerProfile() {
                     >
                         <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
                     </Collapse>
-                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete}/> 
+                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete} showDelete={true}/> 
                 </Stack> 
                 <AppSnackbar
                     open={snackbar.open}

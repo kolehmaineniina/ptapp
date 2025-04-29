@@ -128,6 +128,7 @@ export default function CustomersPage() {
             trainings={trainings}
             isLoading={trainingsLoading}
             error={trainingsError}
+            onDelete={handleDelete}
         />
         </>
     )
