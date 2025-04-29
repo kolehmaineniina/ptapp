@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
-import CustomerDialog from '../components/CustomerDialog';
+import CustomerDialog from '../components/CustomerEntryDialog';
 import { Customer } from '../api/types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
+import CustomerInputDialog from '../components/CustomerInputDialog';
 
 export default function CustomersPage() {
     
@@ -27,6 +28,7 @@ export default function CustomersPage() {
 
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openForm, setOpenForm] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
 
     const { data: customerData, isLoading: customersLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
@@ -65,7 +67,7 @@ export default function CustomersPage() {
         
         refreshCustomers();
         setSelectedCustomer(emptyCustomer);
-        setOpenDialog(false);
+        setOpenForm(false);
     };
 
     const handleDelete = async (customer: Customer) => {
@@ -82,13 +84,20 @@ export default function CustomersPage() {
           }, 0);
     };
 
+    const handleConfirmation = () => {
+        if (selectedCustomer) {
+            handleDelete(selectedCustomer);
+            setOpenDialog(false);
+            setOpenDrawer(false);   
+          }
+    }
 
     return (
         <>
         <Typography variant='h4'>Customers</Typography>
         <CustomerDialog 
-            open={openDialog}
-            onClose={() => setOpenDialog(false)}
+            open={openForm}
+            onClose={() => setOpenForm(false)}
             onChange={handleInputChange}
             onSubmit={handleSubmit}
             customer={selectedCustomer}
@@ -98,7 +107,7 @@ export default function CustomersPage() {
             variant='outlined'
             onClick={() => {
                 setSelectedCustomer(emptyCustomer),
-                setOpenDialog(true)}}
+                setOpenForm(true)}}
         >Add
         </Button>
 
@@ -123,12 +132,17 @@ export default function CustomersPage() {
         <CustomerDrawer
             anchor={"right"}
             open={openDrawer}
-            onClose={() => setOpenDrawer(false)}
             customer={selectedCustomer}
             trainings={trainings}
             isLoading={trainingsLoading}
             error={trainingsError}
-            onDelete={handleDelete}
+            onClose={() => setOpenDrawer(false)}
+            onDelete={() => setOpenDialog(true)}
+        />
+        <CustomerInputDialog 
+            open={openDialog}
+            onClose={() => setOpenDialog(false)}
+            onConfirm={handleConfirmation}
         />
         </>
     )
