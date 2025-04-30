@@ -2,7 +2,7 @@ import { Avatar, Button, Divider, Drawer, Stack, Typography } from "@mui/materia
 import { Customer, Training } from "../api/types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";
-import { Delete, Close } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 export default function CustomerDrawer({open, onClose, onDelete, customer, trainings}: {
     anchor: string;
@@ -33,10 +33,11 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                     <Typography variant="body2">ID: {customer.id}</Typography>
                 </Stack>
                 <Divider />
-                <Typography variant="h5">Trainings</Typography>
+                <Stack>
+                    <Typography variant="h5">Trainings</Typography>
                     <TrainingsList trainings={trainings} onDelete={onClose} showDelete={false}/>
+                </Stack>
                 <Divider/>
-                <Stack spacing={1}>
                 <Button
                     color="primary"
                     variant="contained"
@@ -44,14 +45,6 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                     onClick={() => navigate(`/customers/${customer.id}`)}
                 >View Full Profile
                 </Button>
-                <Button 
-                    startIcon={<Delete/>}
-                    color="error" 
-                    onClick={() => onDelete(customer)}
-                    fullWidth
-                >Delete Customer
-                </Button>
-                </Stack>
             </Stack>
         </Drawer>
     )

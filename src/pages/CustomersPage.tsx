@@ -1,15 +1,15 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button, ButtonGroup, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
 import { Customer } from '../api/types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
-import CustomerInputDialog from '../components/CustomerInputDialog';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmationDialog from '../components/ConfirmDeleteDialog';
 
 export default function CustomersPage() {
     
@@ -32,6 +32,7 @@ export default function CustomersPage() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const [openConfirmation, setConfirmation] = useState(false);
 
     const { data: customerData, isLoading: customersLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
     const customers = customerData?._embedded?.customers ?? [];
@@ -89,21 +90,14 @@ export default function CustomersPage() {
     const handleConfirmation = () => {
         if (selectedCustomer) {
             handleDelete(selectedCustomer);
-            setOpenDialog(false);
+            setConfirmation(false);
             setOpenDrawer(false);   
           }
     }
 
     return (
         <Stack spacing={1}>
-        <Typography variant='h4'>Customers</Typography>
-        <CustomerDialog 
-            open={openForm}
-            onClose={() => setOpenForm(false)}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-            customer={selectedCustomer}
-        /> 
+        <Typography variant='h4'>Customers</Typography> 
         <Stack justifyContent="space-between" spacing={0.5} >
         <Button
                 startIcon={<AddIcon />}
@@ -121,7 +115,7 @@ export default function CustomersPage() {
                 variant='outlined'
                 startIcon={<DeleteIcon />}
                 disabled={!selectedCustomer}
-                onClick={() => selectedCustomer && handleDelete(selectedCustomer)}
+                onClick={() => setConfirmation(true)}
             >
             Customer
         </Button>
@@ -145,11 +139,18 @@ export default function CustomersPage() {
             onClose={() => setOpenDrawer(false)}
             onDelete={() => setOpenDialog(true)}
         />
-        <CustomerInputDialog 
-            open={openDialog}
+        <ConfirmationDialog 
+            open={openConfirmation}
             onClose={() => setOpenDialog(false)}
             onConfirm={handleConfirmation}
             customerName={`${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`}
+        />
+        <CustomerDialog 
+            open={openForm}
+            onClose={() => setOpenForm(false)}
+            onChange={handleInputChange}
+            onSubmit={handleSubmit}
+            customer={selectedCustomer}
         />
         </Stack>
     )

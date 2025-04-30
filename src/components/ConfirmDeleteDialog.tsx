@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, Button } from '@mui/material';
 
-export default function ConfirmDeleteDialog({
+export default function ConfirmationDialog({
     open,
     onClose,
     onConfirm,
