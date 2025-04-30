@@ -12,6 +12,7 @@ export default function CustomerGrid(props: {
     isLoading: boolean;
     onRowClicked: (customer: Customer) => void;
     onRowSelected: (customer: Customer) => void;
+    newRowId: string;
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
@@ -75,6 +76,11 @@ export default function CustomerGrid(props: {
                     { sortable: true,
                     resizable: true }
                 }
+                getRowStyle={(params) => {
+                  if(params.data?.id === props.newRowId) {
+                    return { backgroundColor: "#e8f5e9" };
+                  }
+                }}
             />
         </div>
     );

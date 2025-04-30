@@ -28,6 +28,7 @@ export default function CustomersPage() {
         }
     }
 
+    const [CustomerId, setCustomerId] = useState<string>("");
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openForm, setOpenForm] = useState(false);
@@ -62,15 +63,28 @@ export default function CustomersPage() {
     };
     
     const handleSubmit = async () => {
-        if (selectedCustomer?._links?.self?.href) {
-           await putCustomer(selectedCustomer);
-        } else {
-           await postCustomer(selectedCustomer);
-        }
-        
-        refreshCustomers();
-        setSelectedCustomer(emptyCustomer);
-        setOpenForm(false);
+        try {
+            if (selectedCustomer?._links?.self?.href) {
+                await putCustomer(selectedCustomer);
+            } else {
+                const saved = await postCustomer(selectedCustomer);
+                console.log("Saved customer:", saved);
+          
+                const savedId = saved.id || saved._links?.self?.href.split("/").pop();
+                if (savedId) {
+                  setCustomerId(savedId);
+                }
+            }
+            refreshCustomers();
+            setSelectedCustomer(emptyCustomer);
+            setOpenForm(false);
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: "Failed to save customer",
+                severity: "error"
+            });
+        };
     };
 
     const handleDelete = async (customer: Customer) => {
@@ -135,13 +149,14 @@ export default function CustomersPage() {
         </Button>
         </Stack>
         <CustomerGrid 
-            customers={customers}
+            customers={[...customers].reverse()}
             isLoading={customersLoading}
             onRowClicked={(customer) => {
                 setSelectedCustomer(customer)
                 setOpenDrawer(true)
             }}
             onRowSelected={(customer) => setSelectedCustomer(customer)}
+            newRowId={CustomerId}
         />
         <CustomerDrawer
             anchor={"right"}
