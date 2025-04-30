@@ -8,7 +8,7 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
     anchor: string;
     open: boolean;
     onClose: () => void;
-    onDelete: (customer: Customer) => void;
+    onDelete: () => void;
     customer: Customer;
     trainings: Training[];
     isLoading: boolean;
@@ -35,7 +35,7 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                 <Divider />
                 <Stack>
                     <Typography variant="h5">Trainings</Typography>
-                    <TrainingsList trainings={trainings} onDelete={onClose} showDelete={false}/>
+                    <TrainingsList trainings={trainings} onDelete={onDelete} showDelete={false}/>
                 </Stack>
                 <Divider/>
                 <Button

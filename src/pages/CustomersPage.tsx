@@ -10,7 +10,7 @@ import CustomerDrawer from '../components/CustomerDrawer';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmationDialog from '../components/ConfirmDeleteDialog';
-
+import AppSnackbar from '../components/AppSnackBar';
 export default function CustomersPage() {
     
     const emptyCustomer: Customer = {
@@ -31,8 +31,8 @@ export default function CustomersPage() {
     const [selectedCustomer, setSelectedCustomer] = useState(emptyCustomer);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openForm, setOpenForm] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
     const [openConfirmation, setConfirmation] = useState(false);
+    const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
     const { data: customerData, isLoading: customersLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
     const customers = customerData?._embedded?.customers ?? [];
@@ -80,6 +80,21 @@ export default function CustomersPage() {
             document.activeElement.blur();
         }
 
+        try {
+            await deleteCustomer(customer._links.self.href);
+            setSnackbar({
+                open: true,
+                message: "Customer deleted successfully",
+                severity: "success",
+            });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: "Failed to deleted customer",
+                severity: "error",
+            });
+    }
+
         setSelectedCustomer(emptyCustomer);
         deleteCustomer(customer._links.self.href);
         setTimeout(() => {
@@ -90,8 +105,7 @@ export default function CustomersPage() {
     const handleConfirmation = () => {
         if (selectedCustomer) {
             handleDelete(selectedCustomer);
-            setConfirmation(false);
-            setOpenDrawer(false);   
+            setConfirmation(false);  
           }
     }
 
@@ -137,11 +151,11 @@ export default function CustomersPage() {
             isLoading={trainingsLoading}
             error={trainingsError}
             onClose={() => setOpenDrawer(false)}
-            onDelete={() => setOpenDialog(true)}
+            onDelete={() => {}}
         />
         <ConfirmationDialog 
             open={openConfirmation}
-            onClose={() => setOpenDialog(false)}
+            onClose={() => setConfirmation(false)}
             onConfirm={handleConfirmation}
             customerName={`${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`}
         />
@@ -151,6 +165,12 @@ export default function CustomersPage() {
             onChange={handleInputChange}
             onSubmit={handleSubmit}
             customer={selectedCustomer}
+        />
+        <AppSnackbar
+            open={snackbar.open}
+            message={snackbar.message}
+            severity={snackbar.severity}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
         />
         </Stack>
     )
