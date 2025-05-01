@@ -173,9 +173,7 @@ export default function CustomerProfile() {
     if (!editedCustomer) return <p>Loading customer data...</p>;
 
     return (
- 
         <Stack spacing={2}>
-            <Typography variant='h4' gutterBottom>Customer Profile</Typography>
             <Button 
                 startIcon={<ArrowBack/>} 
                 onClick={() => navigate('/customers')}

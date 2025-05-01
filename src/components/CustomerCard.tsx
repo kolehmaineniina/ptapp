@@ -26,8 +26,8 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
         <Card>
             <CardContent>
                 <Typography variant="h5" gutterBottom>Customer Information</Typography>
-                <Stack spacing={2}>
-                    <>
+                <Stack spacing={2} direction="column">
+                    <Stack direction="row">
                         <TextField
                             label="First Name"
                             name="firstname"
@@ -52,6 +52,8 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                             value={customer.phone}
                             {...fieldProps}
                         />
+                        </Stack> 
+                        <Stack direction="row">
                         <TextField
                             label="Street Address"
                             name="streetaddress"
@@ -69,8 +71,8 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                             name="city"
                             value={customer.city}
                             {...fieldProps}
-                        />                 
-                    </>
+                        />                
+                    </Stack>
                     </Stack>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end" }}>
