@@ -64,7 +64,7 @@ export default function CustomerGrid(props: {
     }
 
     return (
-        <div style={{ height: 500 }}>
+        <div style={{ height: '100%', width: '100%'}}>
             <AgGridReact
                 ref={gridRef}
                 rowSelection="single"

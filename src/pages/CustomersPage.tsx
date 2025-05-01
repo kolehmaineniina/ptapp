@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
@@ -11,8 +11,14 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmationDialog from '../components/ConfirmDeleteDialog';
 import AppSnackbar from '../components/AppSnackBar';
-export default function CustomersPage() {
-    
+
+export default function CustomersPage({
+    customers,
+    isLoading: customersLoading
+  }: {
+    customers: Customer[];
+    isLoading: boolean;
+  }) {    
     const emptyCustomer: Customer = {
         id:"",
         firstname: '',
@@ -35,8 +41,6 @@ export default function CustomersPage() {
     const [openConfirmation, setConfirmation] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
-    const { data: customerData, isLoading: customersLoading } = useQuery({queryKey: ['customers'], queryFn: getCustomers});
-    const customers = customerData?._embedded?.customers ?? [];
     const queryClient = useQueryClient();
 
     const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
@@ -124,9 +128,8 @@ export default function CustomersPage() {
     }
 
     return (
-        <Stack spacing={1}>
-        <Typography variant='h4'>Customers</Typography> 
-        <Stack justifyContent="space-between" spacing={0.5} >
+        <Box sx={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
+        <Stack direction="row" spacing={0.5} >
         <Button
                 startIcon={<AddIcon />}
                 sx={{ px: 3 }}
@@ -134,20 +137,19 @@ export default function CustomersPage() {
                     setSelectedCustomer(emptyCustomer),
                     setOpenForm(true)}}
                     size='large'
-                    variant='outlined'
             >New Customer
             </Button>
             <Button
                 sx={{ px: 3 }}
                 color="error"
-                variant='outlined'
                 startIcon={<DeleteIcon />}
                 disabled={!selectedCustomer}
                 onClick={() => setConfirmation(true)}
             >
             Customer
-        </Button>
+            </Button>
         </Stack>
+        <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
         <CustomerGrid 
             customers={[...customers].reverse()}
             isLoading={customersLoading}
@@ -158,6 +160,7 @@ export default function CustomersPage() {
             onRowSelected={(customer) => setSelectedCustomer(customer)}
             newRowId={CustomerId}
         />
+        </Box>
         <CustomerDrawer
             anchor={"right"}
             open={openDrawer}
@@ -187,6 +190,6 @@ export default function CustomersPage() {
             severity={snackbar.severity}
             onClose={() => setSnackbar({ ...snackbar, open: false })}
         />
-        </Stack>
+        </Box>
     )
 }

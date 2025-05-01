@@ -1,26 +1,34 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AppBarNav from './components//AppBarNav';
-import HomePage from './pages/HomePage';
 import CustomersPage from './pages/CustomersPage'
 import CustomerProfile from './pages/CustomerProfilePage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
+import { getCustomers } from './api/customers';
+import { useQuery } from '@tanstack/react-query';
 
 function App() {
+
+  const { data: customerData, isLoading: customersLoading } = useQuery({
+    queryKey: ['customers'],
+    queryFn: getCustomers,
+  });
+  
+  const customers = customerData?._embedded?.customers ?? [];
+
   return (
-    <>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <AppBarNav />
-        <Container maxWidth='lg' >
+        <AppBarNav customers={customers}/>
+        <Container maxWidth='lg' sx={{ py: 3 }}>
         <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/customers' element={<CustomersPage />} />
+          <Route path='/' element={<CustomersPage customers={customers} isLoading={customersLoading} />} />
           <Route path='/customers/:id' element={<CustomerProfile />} />
         </Routes>
         </Container>
       </LocalizationProvider>
-    </>
+    </Box>
   )
 }
 

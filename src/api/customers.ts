@@ -44,7 +44,7 @@ export async function postCustomer(customer: Customer) {
     if(!response.ok) {
         throw new Error("Failed to add customer");
     }
-
+    
     return await response.json();
 }
 
