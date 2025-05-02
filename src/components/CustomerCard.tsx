@@ -1,4 +1,6 @@
-import { Card, CardContent, Typography, TextField, Stack, CardActions } from "@mui/material";
+import { Card, CardContent, Typography, TextField, CardActions, CardHeader, Avatar } from "@mui/material";
+import Grid from '@mui/material/Grid';
+
 import { Customer } from "../api/types";
 import { ReactNode } from "react";
 
@@ -13,6 +15,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
     const variant: 'outlined' | 'filled' = editable ? 'outlined' : 'filled';
 
     const fieldProps = {
+        fullWidth: true,
         variant: variant,
         onChange: onChange,
         slotProps: {
@@ -24,56 +27,47 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
 
     return (
         <Card>
+            <CardHeader
+                avatar={
+                    <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson" }}>
+                    {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
+                    </Avatar>
+                }
+                title={
+                    <Typography textTransform="uppercase" variant="h6">
+                    {customer.firstname} {customer.lastname}
+                    </Typography>
+                }
+                subheader={
+                    <Typography textTransform="uppercase" variant="caption">
+                    ID: {customer.id}
+                    </Typography>
+                }
+                />
             <CardContent>
-                <Typography variant="h5" gutterBottom>Customer Information</Typography>
-                <Stack spacing={2} direction="column">
-                    <Stack direction="row">
-                        <TextField
-                            label="First Name"
-                            name="firstname"
-                            value={customer.firstname}
-                            {...fieldProps}
-                        />
-                        <TextField
-                            label="Last Name"
-                            name="lastname"
-                            value={customer.lastname}
-                            {...fieldProps}
-                        />
-                        <TextField
-                            label="Email"
-                            name="email"
-                            value={customer.email}
-                            {...fieldProps}
-                        />
-                        <TextField
-                            label="Phone"
-                            name="phone"
-                            value={customer.phone}
-                            {...fieldProps}
-                        />
-                        </Stack> 
-                        <Stack direction="row">
-                        <TextField
-                            label="Street Address"
-                            name="streetaddress"
-                            value={customer.streetaddress}
-                            {...fieldProps}
-                        />
-                        <TextField
-                            label="Postcode"
-                            name="postcode"
-                            value={customer.postcode}
-                            {...fieldProps}
-                        />
-                        <TextField
-                            label="City"
-                            name="city"
-                            value={customer.city}
-                            {...fieldProps}
-                        />                
-                    </Stack>
-                    </Stack>
+                <Grid container spacing={2}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <TextField label="First Name" name="firstname" value={customer.firstname} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <TextField label="Last Name" name="lastname" value={customer.lastname} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <TextField label="Email" name="email" value={customer.email} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                        <TextField label="Phone" name="phone" value={customer.phone} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 12, sm: 8 }}>
+                        <TextField label="Street Address" name="streetaddress" value={customer.streetaddress} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 6, sm: 2 }}>
+                        <TextField label="Postcode" name="postcode" value={customer.postcode} {...fieldProps} />
+                    </Grid>
+                    <Grid size={{ xs: 6, sm: 2 }}>
+                        <TextField label="City" name="city" value={customer.city} {...fieldProps} />
+                    </Grid>
+                </Grid>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end" }}>
                     {actions}

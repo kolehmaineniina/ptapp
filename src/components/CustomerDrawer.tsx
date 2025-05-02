@@ -26,11 +26,11 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                     sx={{alignSelf:"flex-start"}}
                 ></Button>
                 <Stack spacing={1} alignItems="center">
-                    <Avatar sx={{ width: 80, height: 80 }}>
+                    <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson"}}>
                         {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
                     </Avatar>
-                    <Typography variant="h6">{customer.firstname} {customer.lastname}</Typography>
-                    <Typography variant="body2">ID: {customer.id}</Typography>
+                    <Typography variant="caption">{customer.firstname} {customer.lastname}</Typography>
+                    <Typography variant="caption">ID: {customer.id}</Typography>
                 </Stack>
                 <Divider />
                 <Stack>

@@ -176,7 +176,7 @@ export default function CustomerProfile() {
         <Stack spacing={2}>
             <Button 
                 startIcon={<ArrowBack/>} 
-                onClick={() => navigate('/customers')}
+                onClick={() => navigate('/')}
                 sx={{alignSelf:"flex-start"}}
                 >Back
             </Button>

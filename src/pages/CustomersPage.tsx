@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
-import { getCustomers, putCustomer, postCustomer, deleteCustomer } from '../api/customers';
+import { Box, Button, Stack } from '@mui/material';
+import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
 import { Customer } from '../api/types';
