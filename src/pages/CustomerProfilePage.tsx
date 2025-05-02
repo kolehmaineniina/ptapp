@@ -4,7 +4,7 @@ import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCustomerById, putCustomer } from "../api/customers";
 import { useEffect, useState } from "react";
-import { Customer } from "../api/types";
+import { Customer } from "../assets/types";
 import { getTrainings, deleteTraining, postTraining } from "../api/trainings";
 import TrainingsList from "../components/TrainingList";
 import TrainingForm from "../components/TrainingForm";

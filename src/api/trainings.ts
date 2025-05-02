@@ -1,4 +1,4 @@
-import { TrainingToPost } from "./types";
+import { TrainingToPost } from "../assets/types";
 
 const trainingsUrl = "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings";
 

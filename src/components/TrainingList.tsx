@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Training } from "../api/types";
+import { Training } from "../assets/types";
 
 export default function TrainingsList({trainings, onDelete, showDelete} : {
     trainings: Training[];

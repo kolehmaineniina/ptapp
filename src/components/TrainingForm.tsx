@@ -1,5 +1,5 @@
 import { Button, Stack, TextField } from "@mui/material";
-import { TrainingToPost } from "../api/types"
+import { TrainingToPost } from "../assets/types"
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from "dayjs";
 

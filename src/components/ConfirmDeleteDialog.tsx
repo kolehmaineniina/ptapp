@@ -21,7 +21,7 @@ export default function ConfirmationDialog({
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button onClick={onConfirm} color="error" variant="outlined">Continue</Button>
+                <Button onClick={onConfirm} color="error" variant="outlined">Delete</Button>
             </DialogActions>
         </Dialog>
   );

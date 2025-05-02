@@ -1,5 +1,5 @@
 import { Avatar, Button, Divider, Drawer, Stack, Typography } from "@mui/material";
-import { Customer, Training } from "../api/types";
+import { Customer, Training } from "../assets/types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";
 import { Close } from "@mui/icons-material";
@@ -29,12 +29,12 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                     <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson"}}>
                         {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
                     </Avatar>
-                    <Typography variant="caption">{customer.firstname} {customer.lastname}</Typography>
-                    <Typography variant="caption">ID: {customer.id}</Typography>
+                    <Typography variant="h5">{customer.firstname} {customer.lastname}</Typography>
+                    <Typography variant="body1">ID: {customer.id}</Typography>
                 </Stack>
                 <Divider />
                 <Stack>
-                    <Typography variant="h5">Trainings</Typography>
+                    <Typography variant="h6">Trainings</Typography>
                     <TrainingsList trainings={trainings} onDelete={onDelete} showDelete={false}/>
                 </Stack>
                 <Divider/>

@@ -1,6 +1,6 @@
 import{ AppBar, Autocomplete, Button, TextField, Toolbar} from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Customer } from '../api/types';
+import { Customer } from '../assets/types';
 import { HomeFilled } from '@mui/icons-material';
 
 export default function AppBarNav(

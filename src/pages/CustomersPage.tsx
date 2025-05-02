@@ -4,7 +4,7 @@ import { Box, Button, Stack } from '@mui/material';
 import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
-import { Customer } from '../api/types';
+import { Customer } from '../assets/types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
 import AddIcon from '@mui/icons-material/Add';

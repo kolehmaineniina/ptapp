@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, TextField, CardActions, CardHeader, Avatar } from "@mui/material";
 import Grid from '@mui/material/Grid';
 
-import { Customer } from "../api/types";
+import { Customer } from "../assets/types";
 import { ReactNode } from "react";
 
 export default function CustomerCard({ customer, onChange, editable, actions }: { 
@@ -68,10 +68,10 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                         <TextField label="City" name="city" value={customer.city} {...fieldProps} />
                     </Grid>
                 </Grid>
-                </CardContent>
-                <CardActions sx={{ justifyContent: "flex-end" }}>
-                    {actions}
-                </CardActions>
-            </Card>
+            </CardContent>
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+                {actions}
+            </CardActions>
+        </Card>
     )
 }
