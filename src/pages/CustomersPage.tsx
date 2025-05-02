@@ -1,5 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { Box, Button, Stack } from '@mui/material';
 import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
@@ -14,11 +14,18 @@ import AppSnackbar from '../components/AppSnackBar';
 
 export default function CustomersPage({
     customers,
-    isLoading: customersLoading
+    isLoading: customersLoading,
+    refreshCustomers
   }: {
     customers: Customer[];
     isLoading: boolean;
+    refreshCustomers: () => void;
   }) {    
+
+    useEffect(() => {
+        refreshCustomers();
+      }, []);
+      
     const emptyCustomer: Customer = {
         id:"",
         firstname: '',
@@ -41,8 +48,6 @@ export default function CustomersPage({
     const [openConfirmation, setConfirmation] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
-    const queryClient = useQueryClient();
-
     const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
         queryKey: ['trainings', selectedCustomer?._links.trainings.href], 
         queryFn: () => {
@@ -53,11 +58,8 @@ export default function CustomersPage({
             return getTrainings(selectedCustomer._links.trainings.href);
         }, enabled: !!selectedCustomer?._links.trainings.href && openDrawer
     });
-    const trainings = trainingsData?._embedded?.trainings ?? [];
 
-    const refreshCustomers = async () => {
-       await queryClient.invalidateQueries({ queryKey: ['customers'] });
-    }
+    const trainings = trainingsData?._embedded?.trainings ?? [];
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!selectedCustomer) return;

@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Container } from '@mui/material';
 import { getCustomers } from './api/customers';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 function App() {
 
@@ -17,13 +17,18 @@ function App() {
   
   const customers = customerData?._embedded?.customers ?? [];
 
+  const queryClient = useQueryClient();
+
+  const refreshCustomers = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['customers'] });
+ }
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <AppBarNav customers={customers}/>
         <Container maxWidth='xl' sx={{ py: 3 }}>
         <Routes>
-          <Route path='/' element={<CustomersPage customers={customers} isLoading={customersLoading} />} />
+          <Route path='/' element={<CustomersPage refreshCustomers={refreshCustomers} customers={customers} isLoading={customersLoading} />} />
           <Route path='/customers/:id' element={<CustomerProfile />} />
         </Routes>
         </Container>
