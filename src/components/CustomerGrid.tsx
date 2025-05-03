@@ -2,7 +2,7 @@ import { Customer } from '../assets/types';
 import { AgGridReact } from "ag-grid-react"
 import { AllCommunityModule, ModuleRegistry, RowClickedEvent } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef} from 'react';
 
 
 ModuleRegistry.registerModules([AllCommunityModule])
@@ -12,11 +12,13 @@ export default function CustomerGrid(props: {
     isLoading: boolean;
     onRowClicked: (customer: Customer) => void;
     onRowSelected: (customer: Customer) => void;
+    onExport: () => void;
+    exportTrigger: boolean;
     newRowId: string;
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        { checkboxSelection: true, width: 30},
+        { checkboxSelection: true, width: 30, suppressCsvExport: true},
         { headerName: 'ID', field: 'id', 
           sortable: false, 
           filter: true, 
@@ -46,6 +48,13 @@ export default function CustomerGrid(props: {
           gridRef.current.api.hideOverlay();
         }
       }, [props.isLoading, props.customers]);
+
+      useEffect(() => {
+        if (props.exportTrigger) {
+          gridRef.current?.api.exportDataAsCsv();
+          props.onExport(); 
+        }
+      }, [props.exportTrigger]);
 
     const handleRowSelection = () => {
         const selectedNodes = gridRef.current?.api.getSelectedNodes();

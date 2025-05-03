@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmationDialog from '../components/ConfirmDeleteDialog';
 import AppSnackbar from '../components/AppSnackBar';
+import { FileDownload } from '@mui/icons-material';
 
 export default function CustomersPage({
     customers,
@@ -47,6 +48,7 @@ export default function CustomersPage({
     const [openForm, setOpenForm] = useState(false);
     const [openConfirmation, setConfirmation] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
+    const [exportTrigger, setExportTrigger] = useState(false);
 
     const { data: trainingsData, isLoading: trainingsLoading, error: trainingsError } = useQuery({
         queryKey: ['trainings', selectedCustomer?._links.trainings.href], 
@@ -129,6 +131,8 @@ export default function CustomersPage({
           }
     }
 
+    const handleExport = () => setExportTrigger(true)
+ 
     return (
         <Box sx={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
         <Stack direction="row" spacing={0.5} >
@@ -150,6 +154,9 @@ export default function CustomersPage({
             >
             Customer
             </Button>
+            <Button startIcon={<FileDownload />} onClick={handleExport}>
+                Export to CSV
+            </Button>
         </Stack>
         <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
         <CustomerGrid 
@@ -160,6 +167,8 @@ export default function CustomersPage({
                 setOpenDrawer(true)
             }}
             onRowSelected={(customer) => setSelectedCustomer(customer)}
+            onExport={() => setExportTrigger(false)}
+            exportTrigger={exportTrigger}
             newRowId={CustomerId}
         />
         </Box>
