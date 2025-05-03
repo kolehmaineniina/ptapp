@@ -2,6 +2,7 @@ import{ AppBar, Autocomplete, Button, TextField, Toolbar} from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Customer } from '../assets/types';
 import { HomeFilled } from '@mui/icons-material';
+import { CalendarIcon } from '@mui/x-date-pickers';
 
 export default function AppBarNav(
   {customers}: {customers: Customer[]}
@@ -13,6 +14,7 @@ export default function AppBarNav(
     <AppBar position="static">
     <Toolbar sx={{display: 'flex', justifyContent: 'space-between', mx: 2}}>
       <Button size="large" endIcon={<HomeFilled/>} color="inherit" component={NavLink} to="/">PT App</Button>
+      <Button color="inherit" startIcon={<CalendarIcon/>} component={NavLink} to="/calendar">Calendar</Button>
       <Autocomplete
         sx={{ width: 250, bgcolor: "white", borderRadius: 2 }}
         options = {customers}

@@ -7,6 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Container } from '@mui/material';
 import { getCustomers } from './api/customers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import TrainigsCalendar from './pages/CalendarPage';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Container maxWidth='xl' sx={{ py: 3 }}>
         <Routes>
           <Route path='/' element={<CustomersPage refreshCustomers={refreshCustomers} customers={customers} isLoading={customersLoading} />} />
+          <Route path='/calendar' element={<TrainigsCalendar />} />
           <Route path='/customers/:id' element={<CustomerProfile />} />
         </Routes>
         </Container>
