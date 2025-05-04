@@ -17,20 +17,20 @@ export default function CustomerGrid(props: {
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        { headerName: 'Select', checkboxSelection: true, width: 70, suppressCsvExport: true},
+        { headerName: 'Select', checkboxSelection: true, width: 100, suppressCsvExport: true},
         { headerName: 'ID', field: 'id', 
           sortable: false, 
           filter: true, 
           floatingFilter: true,
-          width: 90,
+          width: 100,
         },  
         { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true, width: 120},
         { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true, width: 120 },
-        { headerName: 'Email', field: 'email', sortable: false, width: 140 },
+        { headerName: 'Email', field: 'email', sortable: false, width: 150 },
         { headerName: 'Phone', field: 'phone', sortable: false, width: 120 },
-        { headerName: 'Street Address', field: 'streetaddress', sortable: false, width:140 },
-        { headerName: 'Zip Code', field: 'postcode', width: 90 },
-        { headerName: 'City', field: 'city', width: 90 }
+        { headerName: 'Street Address', field: 'streetaddress', sortable: false, width:150 },
+        { headerName: 'Zip Code', field: 'postcode', width: 100 },
+        { headerName: 'City', field: 'city', width: 100 }
     ], []);
 
     const gridRef = useRef<AgGridReact<Customer>>(null);
