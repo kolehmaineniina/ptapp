@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { groupBy, sumBy } from 'lodash';
 import { getAllTrainings } from "../api/trainings";
 import { Training } from "../types";
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 export default function TrainingsStats() {
@@ -30,13 +30,34 @@ export default function TrainingsStats() {
     console.log(totals)
        
     return (
-        <Box sx={{width: '100%', height: '100%'}}>
-            <Typography variant="h6">This is stats</Typography>
-            <BarChart width={600} height={600} data={totals}>
-                <XAxis dataKey="activity" />
-                <YAxis />
-                <Bar dataKey="minutes"/>
-            </BarChart>
+        <Box sx={{width: '90%', height: '90%', fontFamily: 'monospace', m: 2, p:2}}>
+            <Card>
+                <CardHeader
+                    title={
+                        <Typography textTransform="uppercase" variant="h6">
+                        Dashboard
+                        </Typography>
+                    }
+                    subheader={
+                        <Typography textTransform="uppercase" variant="caption">
+                        Activities
+                        </Typography>
+                    }
+                />
+                <CardContent>
+                <BarChart width={500} height={400} data={totals}>
+                    <XAxis fontWeight="600" dataKey="activity" />
+                    <YAxis />
+                    <Bar 
+                        dataKey="minutes"
+                        radius={[4, 4, 0, 0]}
+                    />
+                </BarChart >
+                <Typography variant="caption">
+                    Training minutes by Activity
+                </Typography>    
+            </CardContent>  
+            </Card>
         </Box>
     )
 
