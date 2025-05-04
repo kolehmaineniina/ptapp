@@ -38,7 +38,7 @@ export async function postTraining(training: TrainingToPost) {
     });
     
     if(!response.ok) {
-        throw new Error("Failed to add customer");
+        throw new Error("Failed to add training");
     }
 
     return await response.json();    

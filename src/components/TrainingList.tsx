@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, IconButton, Typography } from "@mui/material";
+import { List, ListItem, ListItemText, Typography, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Training } from "../types";
 
@@ -10,16 +10,14 @@ export default function TrainingsList({trainings, onDelete, showDelete} : {
 
     return (
         <div>
-            {trainings.length > 1 ? (
+            {trainings.length > 0 ? (
             <List>
             {trainings.map((training: Training) => (
                 <ListItem 
-                key={training.id}
+                key={training._links.self.href}
                 secondaryAction={
                     showDelete &&
-                    <IconButton edge="end" aria-label="delete" onClick={() => onDelete(training._links.self.href)}>
-                      <DeleteIcon />
-                    </IconButton>
+                    <Button startIcon={<DeleteIcon />} onClick={() => onDelete(training._links.self.href)} />
                   }
                 >
                    <ListItemText

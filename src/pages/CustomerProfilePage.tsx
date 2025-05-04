@@ -42,11 +42,16 @@ export default function CustomerProfile() {
     const [editable, setEditable] = useState(false);
 
     useEffect(() => {
-        if (customer) {
-            setEditedCustomer(customer);
-            setOriginalCustomer(customer);
+        if (customer && customer._links.self.href) {
+            const idFromLink = customer._links.self.href.split("/").pop();
+            const enrichedCustomer = { ...customer, id: idFromLink };
+            setOriginalCustomer(enrichedCustomer);
+            setEditedCustomer(enrichedCustomer);
+        } else {
+            console.log("No id link", customer);
         }
-    }, [customer])    
+    }, [customer]);
+         
 
     const handleEdit = () => {
         setOriginalCustomer(editedCustomer);
@@ -90,7 +95,7 @@ export default function CustomerProfile() {
     };
 
     const { data: trainingsData } = useQuery({
-        queryKey: ['trainings', editedCustomer?._links.trainings.href], 
+        queryKey: ['trainings', editedCustomer?.id], 
         queryFn: () => {
             if (!editedCustomer?._links.trainings.href) {
                 return;
@@ -129,7 +134,8 @@ export default function CustomerProfile() {
     const handleAddTraining = async () => {
         if (!editedCustomer?._links?.self?.href) {
             return;}
-        
+            console.log("editedCustomer.id =", editedCustomer?.id);
+            console.log("editedCustomer._links.self.href =", editedCustomer?._links?.self?.href);
         const trainingToSend = {
             date: new Date(newTraining.date).toISOString(), 
             activity: newTraining.activity,
@@ -138,6 +144,7 @@ export default function CustomerProfile() {
         };
         try {
             await postTraining(trainingToSend);
+            console.log("Training payload being sent:", trainingToSend);
             setSnackbar({
                 open: true,
                 message: "Training added",
@@ -158,9 +165,18 @@ export default function CustomerProfile() {
     const handleTrainingDelete = async (trainingUrl: string) => {
         try {
             await deleteTraining(trainingUrl);
+            setSnackbar({
+                open: true,
+                message: "Training delted",
+                severity: "success",
+            });
             await refreshTrainings();
           } catch (error) {
-            console.error(error);
+            setSnackbar({
+                open: true,
+                message: "Deletion failed",
+                severity: "error",
+            });
           }
     };
 

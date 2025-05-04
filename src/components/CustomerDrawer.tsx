@@ -17,9 +17,8 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
     const navigate = useNavigate();
 
     return (
-        
         <Drawer anchor="right" open={open} onClose={onClose}>
-            <Stack sx={{width:350, px:4}} spacing={2}>
+            <Stack sx={{width:350, p:4}} spacing={2}>
                 <Button
                     startIcon={<Close/>}
                     onClick={onClose}
@@ -42,7 +41,7 @@ export default function CustomerDrawer({open, onClose, onDelete, customer, train
                     color="primary"
                     variant="contained"
                     fullWidth
-                    onClick={() => navigate(`/customers/${customer.id}`)}
+                    onClick={() =>  navigate(`/customers/${customer.id}`)}
                 >View Full Profile
                 </Button>
             </Stack>
