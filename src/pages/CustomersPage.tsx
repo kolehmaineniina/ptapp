@@ -133,7 +133,7 @@ export default function CustomersPage({
 
     return (
         <Stack direction="column" spacing={2} sx={{width: '100%', height: '84vh'}} alignItems="center">
-            <Stack direction="row" justifyContent="space-between" sx={{width: '90%'}}> 
+            <Stack direction="row" justifyContent="space-between" sx={{width: '85%'}}> 
                 <ButtonGroup variant='text'>
                     <Button
                         startIcon={<AddIcon />}
@@ -142,7 +142,7 @@ export default function CustomersPage({
                             setSelectedCustomer(emptyCustomer),
                         setOpenForm(true)}}
                     >
-                    New Customer
+                    Customer
                     </Button>
                     <Button
                         sx={{ px: 3 }}
@@ -158,7 +158,7 @@ export default function CustomersPage({
                 Export to CSV
                 </Button>
             </Stack>
-            <Box sx={{ flexGrow: 1, overflow: 'hidden', width: '85vw' }}>
+            <Box sx={{ flexGrow: 1, overflow: 'hidden', width: '90vw' }}>
                 <CustomerGrid 
                     customers={[...customers].reverse()}
                     isLoading={customersLoading}

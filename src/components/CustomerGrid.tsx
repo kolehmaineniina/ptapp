@@ -4,7 +4,6 @@ import { AllCommunityModule, ModuleRegistry, RowClickedEvent } from 'ag-grid-com
 import { ColDef } from "ag-grid-community"
 import { useEffect, useMemo, useRef} from 'react';
 
-
 ModuleRegistry.registerModules([AllCommunityModule])
 
 export default function CustomerGrid(props: {
@@ -18,21 +17,20 @@ export default function CustomerGrid(props: {
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        { checkboxSelection: true, width: 30, suppressCsvExport: true},
+        { headerName: 'Select', checkboxSelection: true, width: 70, suppressCsvExport: true},
         { headerName: 'ID', field: 'id', 
           sortable: false, 
           filter: true, 
           floatingFilter: true,
-          width: 100,
-          cellStyle: { textAlign: 'center' }
+          width: 90,
         },  
-        { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true },
-        { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true },
-        { headerName: 'Email', field: 'email', sortable: false },
-        { headerName: 'Phone', field: 'phone', sortable: false },
-        { headerName: 'Street Address', field: 'streetaddress', sortable: false },
-        { headerName: 'Zip Code', field: 'postcode' },
-        { headerName: 'City', field: 'city' }
+        { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true, width: 120},
+        { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true, width: 120 },
+        { headerName: 'Email', field: 'email', sortable: false, width: 140 },
+        { headerName: 'Phone', field: 'phone', sortable: false, width: 120 },
+        { headerName: 'Street Address', field: 'streetaddress', sortable: false, width:140 },
+        { headerName: 'Zip Code', field: 'postcode', width: 90 },
+        { headerName: 'City', field: 'city', width: 90 }
     ], []);
 
     const gridRef = useRef<AgGridReact<Customer>>(null);
@@ -49,12 +47,12 @@ export default function CustomerGrid(props: {
         }
       }, [props.isLoading, props.customers]);
 
-      useEffect(() => {
-        if (props.exportTrigger) {
-          gridRef.current?.api.exportDataAsCsv();
-          props.onExport(); 
-        }
-      }, [props.exportTrigger]);
+    useEffect(() => {
+      if (props.exportTrigger) {
+        gridRef.current?.api.exportDataAsCsv();
+        props.onExport(); 
+      }
+    }, [props.exportTrigger]);
 
     const handleRowSelection = () => {
         const selectedNodes = gridRef.current?.api.getSelectedNodes();
@@ -83,11 +81,12 @@ export default function CustomerGrid(props: {
                 columnDefs={colDefs}
                 defaultColDef={
                     { sortable: true,
-                    resizable: true }
+                    resizable: true
+                   }
                 }
                 getRowStyle={(params) => {
                   if(params.data?.id === props.newRowId) {
-                    return { backgroundColor: "#e8f5e9" };
+                    return { backgroundColor: "#e5f3fd" };
                   }
                 }}
             />

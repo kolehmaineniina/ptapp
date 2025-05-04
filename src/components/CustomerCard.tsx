@@ -49,7 +49,6 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                 {actions}
             </CardActions>
             </Stack>
-
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid size={{ xs: 12, sm: 6, md: 3 }}>

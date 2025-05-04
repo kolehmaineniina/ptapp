@@ -8,6 +8,7 @@ import { Container } from '@mui/material';
 import { getCustomers } from './api/customers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import TrainigsCalendar from './pages/CalendarPage';
+import TrainingsStats from './pages/StatisticsPage';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path='/' element={<CustomersPage refreshCustomers={refreshCustomers} customers={customers} isLoading={customersLoading} />} />
           <Route path='/calendar' element={<TrainigsCalendar />} />
+          <Route path='/stats' element={<TrainingsStats />} />
           <Route path='/customers/:id' element={<CustomerProfile />} />
         </Routes>
         </Container>

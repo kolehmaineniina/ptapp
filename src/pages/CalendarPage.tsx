@@ -10,7 +10,7 @@ import { getDay } from 'date-fns/getDay';
 import { parseISO } from 'date-fns/parseISO';
 import { addMinutes } from 'date-fns/addMinutes';
 import { enUS } from 'date-fns/locale'
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 export default function TrainigsCalendar() {
@@ -30,7 +30,7 @@ export default function TrainigsCalendar() {
         locales,
     });
       
-    const { data } = useQuery({
+    const { data, isLoading, error } = useQuery({
         queryKey: ['all-trainings'],
         queryFn: () => getAllTrainings(),
     });
@@ -50,9 +50,15 @@ export default function TrainigsCalendar() {
         });
       }, [trainings]);
 
-    
+    if (isLoading) {
+        return <Typography color="info" variant="h6">Loading events</Typography>
+    }
+
+    if (error) {
+        return <Typography color="error" variant="h6">Failed to load calendar</Typography>
+    }
     return (
-        <Stack sx={{ height: '80vh', width: '100%'}} alignItems='center'>
+        <Stack sx={{ height: '80vh', width: '100%', pt: 2}} alignItems='center'>
             <Calendar 
                 view={view}
                 onView={handleView}
@@ -60,7 +66,7 @@ export default function TrainigsCalendar() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: '100%', width: '90%' }}
+                style={{ height: '90%', width: '90%' }}
             />
         </Stack>
 
