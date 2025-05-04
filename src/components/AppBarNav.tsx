@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Customer } from '../types';
 import { BarChart, HomeFilled } from '@mui/icons-material';
 import { CalendarIcon } from '@mui/x-date-pickers';
-import { size } from 'lodash';
 
 export default function AppBarNav(
   {customers}: {customers: Customer[]}

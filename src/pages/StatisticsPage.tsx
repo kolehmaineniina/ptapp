@@ -30,8 +30,8 @@ export default function TrainingsStats() {
     console.log(totals)
        
     return (
-        <Box sx={{width: '90%', height: '90%', fontFamily: 'monospace', m: 2, p:2}}>
-            <Card>
+        <Box sx={{display: "flex", justifyContent: "center", width: '100%', height: '100%'}}>
+            <Card sx={{mx: 5, height: "60%", width: "80%", fontFamily: 'sans-serif', fontSize:'smaller'}}>
                 <CardHeader
                     title={
                         <Typography textTransform="uppercase" variant="h6">
@@ -45,12 +45,14 @@ export default function TrainingsStats() {
                     }
                 />
                 <CardContent>
-                <BarChart width={500} height={400} data={totals}>
+                <BarChart width={500} height={500} data={totals}>
                     <XAxis fontWeight="600" dataKey="activity" />
                     <YAxis />
                     <Bar 
+                        fill="#dc143C"
                         dataKey="minutes"
                         radius={[4, 4, 0, 0]}
+
                     />
                 </BarChart >
                 <Typography variant="caption">

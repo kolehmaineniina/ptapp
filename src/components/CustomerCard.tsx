@@ -28,22 +28,22 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
     return (
         <Card>
             <Stack direction="row" justifyContent="space-between">
-            <CardHeader
-                avatar={
-                    <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson" }}>
-                    {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
-                    </Avatar>
-                }
-                title={
-                    <Typography textTransform="uppercase" variant="h6">
-                    {customer.firstname} {customer.lastname}
-                    </Typography>
-                }
-                subheader={
-                    <Typography textTransform="uppercase" variant="caption">
-                    ID: {customer.id}
-                    </Typography>
-                }
+                <CardHeader
+                    avatar={
+                        <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson" }}>
+                        {customer.firstname.charAt(0)}{customer.lastname.charAt(0)}
+                        </Avatar>
+                    }
+                    title={
+                        <Typography textTransform="uppercase" variant="h6">
+                        {customer.firstname} {customer.lastname}
+                        </Typography>
+                    }
+                    subheader={
+                        <Typography textTransform="uppercase" variant="caption">
+                        ID: {customer.id}
+                        </Typography>
+                    }
                 />
             <CardActions>
                 {actions}
