@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
@@ -132,44 +132,46 @@ export default function CustomersPage({
     }
 
     return (
-        <Box sx={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
-        <Stack direction="row" spacing={0.5} >
-        <Button
-                startIcon={<AddIcon />}
-                sx={{ px: 3 }}
-                onClick={() => {
-                    setSelectedCustomer(emptyCustomer),
-                    setOpenForm(true)}}
-                    size='large'
-            >New Customer
-            </Button>
-            <Button
-                sx={{ px: 3 }}
-                color="error"
-                startIcon={<DeleteIcon />}
-                disabled={!selectedCustomer}
-                onClick={() => setConfirmation(true)}
-            >
-            Customer
-            </Button>
-            <Button startIcon={<FileDownload />} onClick={() => setExportTrigger(true)}>
+        <Stack direction="column" spacing={2} sx={{width: '100%', height: '84vh'}} alignItems="center">
+            <Stack direction="row" justifyContent="space-between" sx={{width: '90%'}}> 
+                <ButtonGroup variant='text'>
+                    <Button
+                        startIcon={<AddIcon />}
+                        sx={{ px: 3 }}
+                        onClick={() => {
+                            setSelectedCustomer(emptyCustomer),
+                        setOpenForm(true)}}
+                    >
+                    New Customer
+                    </Button>
+                    <Button
+                        sx={{ px: 3 }}
+                        color="error"
+                        startIcon={<DeleteIcon />}
+                        disabled={!selectedCustomer}
+                        onClick={() => setConfirmation(true)}
+                    >
+                    Customer
+                    </Button>
+                </ButtonGroup>
+                <Button size='small' sx={{color: 'black'}}startIcon={<FileDownload />} onClick={() => setExportTrigger(true)} color="secondary">
                 Export to CSV
-            </Button>
-        </Stack>
-        <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
-        <CustomerGrid 
-            customers={[...customers].reverse()}
-            isLoading={customersLoading}
-            onRowClicked={(customer) => {
-                setSelectedCustomer(customer)
-                setOpenDrawer(true)
-            }}
-            onRowSelected={(customer) => setSelectedCustomer(customer)}
-            onExport={() => setExportTrigger(false)}
-            exportTrigger={exportTrigger}
-            newRowId={CustomerId}
-        />
-        </Box>
+                </Button>
+            </Stack>
+            <Box sx={{ flexGrow: 1, overflow: 'hidden', width: '85vw' }}>
+                <CustomerGrid 
+                    customers={[...customers].reverse()}
+                    isLoading={customersLoading}
+                    onRowClicked={(customer) => {
+                        setSelectedCustomer(customer)
+                        setOpenDrawer(true)
+                    }}
+                    onRowSelected={(customer) => setSelectedCustomer(customer)}
+                    onExport={() => setExportTrigger(false)}
+                    exportTrigger={exportTrigger}
+                    newRowId={CustomerId}
+                />
+            </Box>
         <CustomerDrawer
             anchor={"right"}
             open={openDrawer}
@@ -199,6 +201,6 @@ export default function CustomersPage({
             severity={snackbar.severity}
             onClose={() => setSnackbar({ ...snackbar, open: false })}
         />
-        </Box>
+        </Stack>
     )
 }

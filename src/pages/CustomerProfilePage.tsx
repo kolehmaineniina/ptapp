@@ -1,4 +1,4 @@
-import { Button, Collapse, Stack, Typography } from "@mui/material";
+import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CustomerCard from "../components/CustomerCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -173,53 +173,67 @@ export default function CustomerProfile() {
     if (!editedCustomer) return <p>Loading customer data...</p>;
 
     return (
-        <Stack spacing={2}>
-            <Button 
-                startIcon={<ArrowBack/>} 
-                onClick={() => navigate('/')}
-                sx={{alignSelf:"flex-start"}}
-                >Back
-            </Button>
-            <CustomerCard 
+        <Stack spacing={2} sx={{ width: '90vw', mx: 3 }}>
+        <Button
+            startIcon={<ArrowBack />}
+            onClick={() => navigate('/')}
+            sx={{ ml: 4, mt: 2, alignSelf: "flex-start" }}
+        >
+        Back
+        </Button>
+        <Box>
+            <CustomerCard
                 customer={editedCustomer}
                 onChange={handleInputChange}
                 editable={editable}
                 actions={
                     editable ? (
                     <>
-                        <Button onClick={handleSave}>Save</Button>
-                        <Button onClick={handleCancel}>Cancel</Button>
+                    <Button onClick={handleSave}>Save</Button>
+                    <Button onClick={handleCancel}>Cancel</Button>
                     </>
-                    ) : (
+                ) : (
                     <Button onClick={handleEdit} variant="contained">Edit</Button>
-                    )
-                }
+                )
+            }
+            />
+        </Box>
+        <Stack direction="row" spacing={5} sx={{p:3}}>
+            <Stack spacing={2} sx={{ flex: 2}}>
+                <Typography variant="h5">Trainings</Typography>
+                <TrainingsList
+                    trainings={trainings}
+                    onDelete={handleTrainingDelete}
+                    showDelete={true}
                 />
-                <Stack spacing={2}>
-                    <Typography variant="h5">Trainings</Typography>
-                    <Button 
-                        startIcon={ collapse ? <ExpandLess/> : <ExpandMore/>}
-                        onClick={() => setCollapse(prev => !prev)}
-                        color="primary"
-                        sx={{alignSelf:"flex-start",
-                            '&:hover': {
-                            transform: 'scale(1.1)'}}
-                        }    
-                    > { collapse ? "Collapse" : "Add new training"}
-                    </Button>
-                    <Collapse
-                        in={collapse}
-                    >
-                        <TrainingForm training={newTraining} onChange={handleTrainingInputChange} onSubmit={handleAddTraining}/>
-                    </Collapse>
-                    <TrainingsList trainings={trainings} onDelete={handleTrainingDelete} showDelete={true}/> 
-                </Stack> 
-                <AppSnackbar
-                    open={snackbar.open}
-                    message={snackbar.message}
-                    severity={snackbar.severity}
-                    onClose={() => setSnackbar({ ...snackbar, open: false })}
-                />
+            </Stack>
+            <Box sx={{ flex: 1 }}>
+                <Button
+                    startIcon={collapse ? <ExpandLess /> : <ExpandMore />}
+                    onClick={() => setCollapse(prev => !prev)}
+                    color="primary"
+                    sx={{
+                    mb: 2,
+                    '&:hover': { transform: 'scale(1.05)' }
+                    }}
+                > {collapse ? "Collapse" : "Add new training"}
+                </Button>
+                <Collapse in={collapse}>
+                    <TrainingForm
+                    training={newTraining}
+                    onChange={handleTrainingInputChange}
+                    onSubmit={handleAddTraining}
+                    />
+                </Collapse>
+            </Box>
         </Stack>
+        <AppSnackbar
+            open={snackbar.open}
+            message={snackbar.message}
+            severity={snackbar.severity}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+        />
+        </Stack>
+
     )
 }

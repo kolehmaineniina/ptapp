@@ -10,39 +10,41 @@ export default function TrainingForm({ training, onChange, onSubmit,
     onSubmit: () => void;
 }) {
     return (
-        <Stack spacing={2}>
-        <DatePicker
-            label="Date"
-            value={training.date ? dayjs(training.date) : null}
-            onChange={(date) => {
-                if (date) {
-                onChange({
-                    target: {
-                    name: "date",
-                    value: date.toISOString(),
-                    }
-                } as React.ChangeEvent<HTMLInputElement>);
-                }
-            }}
-            slotProps={{ textField: { fullWidth: true } }}
-            />
-        <TextField
-            label="Activity"
-            type="text"
-            name="activity"
-            value={training.activity}
-            onChange={onChange}
-            fullWidth
-        />
-        <TextField
-            label="Duration (mins)"
-            type="number"
-            name="duration"
-            value={training.duration}
-            onChange={onChange}
-            fullWidth
-        />
-        <Button variant="contained" onClick={onSubmit} disabled={!training.date || !training.activity || Number(training.duration) <= 0}>Save Training</Button>
+        <Stack spacing={2} >
+            <Stack spacing={1}>
+                <DatePicker
+                    label="Date"
+                    value={training.date ? dayjs(training.date) : null}
+                    onChange={(date) => {
+                        if (date) {
+                        onChange({
+                            target: {
+                            name: "date",
+                            value: date.toISOString(),
+                            }
+                        } as React.ChangeEvent<HTMLInputElement>);
+                        }
+                    }}
+                    slotProps={{ textField: { fullWidth: true } }}
+                    />
+                <TextField
+                    label="Activity"
+                    type="text"
+                    name="activity"
+                    value={training.activity}
+                    onChange={onChange}
+                    fullWidth
+                />
+                <TextField
+                    label="Minutes"
+                    type="number"
+                    name="duration"
+                    value={training.duration}
+                    onChange={onChange}
+                    fullWidth
+                />
+            </Stack>
+            <Button variant="contained" onClick={onSubmit} disabled={!training.date || !training.activity || Number(training.duration) <= 0}>Save Training</Button>
         </Stack>
     )
 }

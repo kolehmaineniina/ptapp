@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, TextField, CardActions, CardHeader, Avatar } from "@mui/material";
+import { Card, CardContent, Typography, TextField, CardActions, CardHeader, Avatar, Stack } from "@mui/material";
 import Grid from '@mui/material/Grid';
 
 import { Customer } from "../types";
@@ -27,6 +27,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
 
     return (
         <Card>
+            <Stack direction="row" justifyContent="space-between">
             <CardHeader
                 avatar={
                     <Avatar sx={{ width: 80, height: 80, bgcolor: "crimson" }}>
@@ -44,6 +45,11 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                     </Typography>
                 }
                 />
+            <CardActions>
+                {actions}
+            </CardActions>
+            </Stack>
+
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -69,9 +75,6 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                     </Grid>
                 </Grid>
             </CardContent>
-            <CardActions sx={{ justifyContent: "flex-end" }}>
-                {actions}
-            </CardActions>
         </Card>
     )
 }

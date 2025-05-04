@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllTrainings } from "../api/trainings";
 import { Training } from "../types";
 import { useMemo, useState } from "react";
-
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
 import { format } from 'date-fns/format';
 import { parse } from 'date-fns/parse';
@@ -11,16 +10,14 @@ import { getDay } from 'date-fns/getDay';
 import { parseISO } from 'date-fns/parseISO';
 import { addMinutes } from 'date-fns/addMinutes';
 import { enUS } from 'date-fns/locale'
-import { Box } from "@mui/material";
-
+import { Stack } from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
 
 export default function TrainigsCalendar() {
 
     const [view, setView] = useState<View>('month');
 
-    const handleView = (newView: view) => setView(newView);
+    const handleView = (newView: View) => setView(newView);
     const locales = {
         'en-US': enUS, 
     };
@@ -33,7 +30,7 @@ export default function TrainigsCalendar() {
         locales,
     });
       
-    const { data, isLoading, error } = useQuery({
+    const { data } = useQuery({
         queryKey: ['all-trainings'],
         queryFn: () => getAllTrainings(),
     });
@@ -55,7 +52,7 @@ export default function TrainigsCalendar() {
 
     
     return (
-        <Box sx={{ height: '80vh', width: '100%' }}>
+        <Stack sx={{ height: '80vh', width: '100%'}} alignItems='center'>
             <Calendar 
                 view={view}
                 onView={handleView}
@@ -63,9 +60,9 @@ export default function TrainigsCalendar() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: '100%', width: '100%' }}
+                style={{ height: '100%', width: '90%' }}
             />
-        </Box>
+        </Stack>
 
 
     );
