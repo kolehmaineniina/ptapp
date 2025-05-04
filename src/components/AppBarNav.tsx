@@ -1,4 +1,4 @@
-import{ AppBar, Autocomplete, Box, Button, ButtonGroup, Stack, TextField, Toolbar, Typography} from '@mui/material';
+import{ AppBar, Autocomplete, Button, ButtonGroup, Stack, TextField, Toolbar, Typography} from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Customer } from '../types';
 import { BarChart, HomeFilled } from '@mui/icons-material';

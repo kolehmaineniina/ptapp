@@ -7,7 +7,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 export default function TrainingsStats() {
     
-    const { data, isLoading, error} = useQuery({
+    const { data } = useQuery({
             queryKey: ['allTrainings'], 
             queryFn: () => {
                 return  getAllTrainings();
