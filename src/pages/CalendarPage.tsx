@@ -54,7 +54,6 @@ export default function TrainigsCalendar() {
       }, [trainings]);
 
     
-
     return (
         <Box sx={{ height: '80vh', width: '100%' }}>
             <Calendar 
