@@ -1,6 +1,6 @@
 import{ AppBar, Autocomplete, Button, TextField, Toolbar} from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Customer } from '../assets/types';
+import { Customer } from '../types';
 import { HomeFilled } from '@mui/icons-material';
 import { CalendarIcon } from '@mui/x-date-pickers';
 

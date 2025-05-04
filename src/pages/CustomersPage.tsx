@@ -4,7 +4,7 @@ import { Box, Button, Stack } from '@mui/material';
 import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
 import CustomerDialog from '../components/CustomerEntryDialog';
-import { Customer } from '../assets/types';
+import { Customer } from '../types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';
 import AddIcon from '@mui/icons-material/Add';
@@ -131,8 +131,6 @@ export default function CustomersPage({
           }
     }
 
-    const handleExport = () => setExportTrigger(true)
- 
     return (
         <Box sx={{ height: '80vh', display: 'flex', flexDirection: 'column' }}>
         <Stack direction="row" spacing={0.5} >
@@ -154,7 +152,7 @@ export default function CustomersPage({
             >
             Customer
             </Button>
-            <Button startIcon={<FileDownload />} onClick={handleExport}>
+            <Button startIcon={<FileDownload />} onClick={() => setExportTrigger(true)}>
                 Export to CSV
             </Button>
         </Stack>

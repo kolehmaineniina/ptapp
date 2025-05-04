@@ -1,5 +1,5 @@
 import { Avatar, Button, Divider, Drawer, Stack, Typography } from "@mui/material";
-import { Customer, Training } from "../assets/types";
+import { Customer, Training } from "../types";
 import { useNavigate } from "react-router-dom";
 import TrainingsList from "./TrainingList";
 import { Close } from "@mui/icons-material";

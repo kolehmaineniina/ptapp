@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, TextField, CardActions, CardHeader, Avatar } from "@mui/material";
 import Grid from '@mui/material/Grid';
 
-import { Customer } from "../assets/types";
+import { Customer } from "../types";
 import { ReactNode } from "react";
 
 export default function CustomerCard({ customer, onChange, editable, actions }: { 

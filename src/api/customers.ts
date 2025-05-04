@@ -1,4 +1,4 @@
-import { Customer } from "../assets/types";
+import { Customer } from "../types";
 
 const baseUrl = "https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers"
 
