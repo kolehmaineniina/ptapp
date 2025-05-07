@@ -31,7 +31,7 @@ function App() {
         <Container maxWidth='xl' sx={{ py: 3 }}>
         <Routes>
           <Route path='/' element={<CustomersPage refreshCustomers={refreshCustomers} customers={customers} isLoading={customersLoading} />} />
-          <Route path='/calendar' element={<TrainigsCalendar />} />
+          <Route path='/calendar' element={<TrainigsCalendar customers={customers}/>} />
           <Route path='/stats' element={<TrainingsStats />} />
           <Route path='/customers/:id' element={<CustomerProfile />} />
         </Routes>

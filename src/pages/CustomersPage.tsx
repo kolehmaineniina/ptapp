@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import { putCustomer, postCustomer, deleteCustomer } from '../api/customers';
 import CustomerGrid from '../components/CustomerGrid';
-import CustomerDialog from '../components/CustomerEntryDialog';
+import CustomerDialog from '../components/CustomerFormDialog';
 import { Customer } from '../types';
 import { getTrainings } from '../api/trainings';
 import CustomerDrawer from '../components/CustomerDrawer';

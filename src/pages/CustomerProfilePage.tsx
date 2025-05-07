@@ -149,8 +149,6 @@ export default function CustomerProfile() {
     const handleAddTraining = async () => {
         if (!editedCustomer?._links?.self?.href) {
             return;}
-            console.log("editedCustomer.id =", editedCustomer?.id);
-            console.log("editedCustomer._links.self.href =", editedCustomer?._links?.self?.href);
         const trainingToSend = {
             date: new Date(newTraining.date).toISOString(), 
             activity: newTraining.activity,
