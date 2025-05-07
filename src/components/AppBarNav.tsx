@@ -20,7 +20,7 @@ export default function AppBarNav(
             <Button size="large" color="inherit" startIcon={<CalendarIcon/>} component={NavLink} to="/calendar" />
           </ButtonGroup>
           <Stack spacing={2} direction="row" alignItems="center">
-          <Typography sx={{ lineHeight: 1, px: 1, fontWeight: 700, fontSize: "1.1em", textTransform: "uppercase"}}>PT App</Typography>
+            <Typography sx={{ lineHeight: 1, px: 1, fontWeight: 700, fontSize: "1.1em", textTransform: "uppercase"}}>PT App</Typography>
             <Autocomplete
               sx={{ width: 250, bgcolor: "whitesmoke", borderRadius: 2, m: 1 }}
               options = {customers}

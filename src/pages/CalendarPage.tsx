@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllTrainings } from "../api/trainings";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAllTrainings, postTraining } from "../api/trainings";
 import { Customer, Training } from "../types";
 import { useMemo, useState } from "react";
 import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
@@ -10,9 +10,10 @@ import { getDay } from 'date-fns/getDay';
 import { parseISO } from 'date-fns/parseISO';
 import { addMinutes } from 'date-fns/addMinutes';
 import { enUS } from 'date-fns/locale'
-import { Stack, Typography } from "@mui/material";
+import { SelectChangeEvent, Stack, Typography } from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import CalendarDialog from "../components/CalendarDialog";
+import AppSnackbar from "../components/AppSnackBar";
 
 export default function TrainigsCalendar({customers}: {
     customers: Customer[];
@@ -59,6 +60,12 @@ export default function TrainigsCalendar({customers}: {
           };
         });
       }, [trainings]);
+    
+    const queryClient = useQueryClient();
+    const refreshTrainings = async () => {
+        await queryClient.invalidateQueries({ queryKey: ['all-trainings'] }); 
+
+    };
 
       const emptyTraining = {
         date: '',
@@ -69,17 +76,36 @@ export default function TrainigsCalendar({customers}: {
     const [newTraining, setNewTraining] = useState(emptyTraining);
     const [openDialog, setOpenDialog] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+    const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-                const { name, value } = event.target;
-        
-                setNewTraining({
-                    ...newTraining,
-                    [name]: value
-                });
-            };
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
+        const { name, value } = event.target;
 
-    const handleBooking = () => {};
+        setNewTraining({
+            ...newTraining,
+            [name]: value
+        });
+    };
+
+    const handleBooking = async () => {
+        try {
+            await postTraining(newTraining);
+            await refreshTrainings();
+            setNewTraining(emptyTraining);
+            setOpenDialog(false);
+            setSnackbar({
+                open: true,
+                message: "Training added successfully!",
+                severity: "success",
+            });
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: "Adding failed",
+                severity: "error",
+            })
+        } 
+    };
  
     if (isLoading) {
         return <Typography color="info" variant="h6">Loading events</Typography>
@@ -105,6 +131,7 @@ export default function TrainigsCalendar({customers}: {
                 style={{ height: '90%', width: '90%' }}
             />
             <CalendarDialog 
+                customers={customers}
                 newTraining={newTraining}
                 selectedDate={selectedDate}
                 open={openDialog}
@@ -112,9 +139,13 @@ export default function TrainigsCalendar({customers}: {
                 onSubmit={handleBooking}
                 onChange={handleInputChange}
             />
+            <AppSnackbar
+                open={snackbar.open}
+                message={snackbar.message}
+                severity={snackbar.severity}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+            />
         </Stack>
-
-
     );
     
 }

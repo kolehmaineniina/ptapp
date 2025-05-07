@@ -154,7 +154,7 @@ export default function CustomerProfile() {
             activity: newTraining.activity,
             duration: Number(newTraining.duration), 
             customer: editedCustomer._links.self.href
-        };
+    };
         
         try {
             await postTraining(trainingToSend);

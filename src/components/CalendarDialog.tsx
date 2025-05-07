@@ -1,31 +1,55 @@
-import { Button, Dialog, DialogContent } from "@mui/material";
-import { TrainingToPost } from "../types";
+import { Button, Dialog, DialogContent, FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Customer, TrainingToPost } from "../types";
 import TrainingForm from "./TrainingForm";
 import dayjs from "dayjs";
 
-export default function CalendarDialog({ newTraining, selectedDate, open, onClose, onSubmit, onChange}: {
+export default function CalendarDialog({ customers, newTraining, selectedDate, open, onClose, onSubmit, onChange}: {
+    customers: Customer[];
     newTraining: TrainingToPost;
     selectedDate: Date | null;
     open: boolean;
     onClose: () => void;
-    onSubmit: () => void;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onSubmit: (training: TrainingToPost) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent) => void;
 }) {
 
     return (
         <Dialog
             open={open}
             onClose={onClose}
+            slotProps={{
+                paper: {
+                    component: 'form',
+                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault();
+                        onSubmit(newTraining);
+                    } 
+                }
+            }}
         >
             <DialogContent>
-                <TrainingForm
-                    training={{
-                        ...newTraining,
-                        date: selectedDate ? dayjs(selectedDate).toISOString() : ""
-                    }}
-                    onChange={onChange}
-                />
-                <Button variant="contained" onClick={onSubmit} disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
+                <FormControl>
+                    <Select
+                        label="Select customer"
+                        name="customer"
+                        value={newTraining.customer ?? ""}
+                        onChange={onChange}
+                        required
+                    > {customers.map((c: Customer)=> (
+                        <MenuItem key={c.id} value={`https://customerrestservice-personaltraining.rahtiapp.fi/api/customers/${c.id}`}>
+                            {c.firstname} {c.lastname}
+                        </MenuItem>
+                    ))}
+                    </Select>
+                    <TrainingForm
+                        training={{
+                            ...newTraining,
+                            date: selectedDate ? dayjs(selectedDate).toISOString() : ""
+                        }}
+                        onChange={onChange}
+                    />
+                    <Button variant="contained" type="submit" disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
+                </FormControl>
             </DialogContent>       
         </Dialog>
     )
