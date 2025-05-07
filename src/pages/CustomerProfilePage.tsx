@@ -20,7 +20,7 @@ export default function CustomerProfile() {
 
     const navigate = useNavigate();
     
-    const { data: customer, isLoading, error } = useQuery({
+    const { data: customer, isLoading, error, isSuccess } = useQuery({
         queryKey: ['customer', id], 
         queryFn: () => {
             return id ? getCustomerById(id) : Promise.reject("No customer ID provided");
@@ -37,16 +37,31 @@ export default function CustomerProfile() {
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
     }
 
-    const [originalCustomer, setOriginalCustomer] = useState<Customer | null>(null);
-    const [editedCustomer, setEditedCustomer] = useState<Customer | null>(null);
+    const emptyCustomer: Customer = {
+        id:"",
+        firstname: '',
+        lastname: '',
+        phone: '',
+        email: '',
+        streetaddress: '',
+        postcode: '',
+        city: '',
+        _links: {
+            self: {href: ''},
+            trainings: {href: ''}
+        }
+    }
+
+    const [originalCustomer, setOriginalCustomer] = useState(emptyCustomer);
+    const [editedCustomer, setEditedCustomer] = useState(emptyCustomer);
     const [editable, setEditable] = useState(false);
 
     useEffect(() => {
         if (customer && customer._links.self.href) {
-            const idFromLink = customer._links.self.href.split("/").pop();
-            const enrichedCustomer = { ...customer, id: idFromLink };
-            setOriginalCustomer(enrichedCustomer);
-            setEditedCustomer(enrichedCustomer);
+            console.log(customer)
+            const customerWithId = { ...customer, id: customer._links.self.href.split("/").pop()};
+            setOriginalCustomer(customerWithId);
+            setEditedCustomer(customerWithId);
         } else {
             console.log("No id link", customer);
         }
@@ -106,11 +121,11 @@ export default function CustomerProfile() {
     });
 
     const trainings = trainingsData?._embedded?.trainings ?? [];
-
+    
     const refreshTrainings = async () => {
         if (editedCustomer?._links.trainings.href) {
             await queryClient.invalidateQueries({ 
-                queryKey: ['trainings', editedCustomer._links.trainings.href] });
+                queryKey: ['trainings', editedCustomer?.id] });
         }
     }
 
@@ -142,14 +157,9 @@ export default function CustomerProfile() {
             duration: Number(newTraining.duration), 
             customer: editedCustomer._links.self.href
         };
+        
         try {
             await postTraining(trainingToSend);
-            console.log("Training payload being sent:", trainingToSend);
-            setSnackbar({
-                open: true,
-                message: "Training added",
-                severity: "success",
-            });
             await refreshTrainings();
             setNewTraining(emptyTraining);
 
@@ -168,13 +178,13 @@ export default function CustomerProfile() {
             setSnackbar({
                 open: true,
                 message: "Training delted",
-                severity: "success",
+                severity: "info",
             });
             await refreshTrainings();
           } catch (error) {
             setSnackbar({
                 open: true,
-                message: "Deletion failed",
+                message: "Error deleting training",
                 severity: "error",
             });
           }
@@ -183,13 +193,36 @@ export default function CustomerProfile() {
     const [collapse, setCollapse] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
 
-    if (isLoading) return <p>Loading customer...</p>;
-    if (error) return <p>Error loading customer</p>;
-    if (!customer) return <p>No customer found.</p>;
-    if (!editedCustomer) return <p>Loading customer data...</p>;
-
+    useEffect(() => {
+        if (isLoading) {
+          setSnackbar({
+            open: true,
+            message: "Loading profile...",
+            severity: "info",
+          });
+        } else if (error) {
+          setSnackbar({
+            open: true,
+            message: "Error loading profile",
+            severity: "error",
+          });
+        } else if (!customer) {
+          setSnackbar({
+            open: true,
+            message: "No customer found.",
+            severity: "error",
+          });
+        } else if (isSuccess) {
+            setSnackbar({
+              open: false,
+              message: "",
+              severity: "info",
+            });
+          }
+      }, [isLoading, error, customer, isSuccess]);
+    
     return (
-        <Stack spacing={2} sx={{ width: '90vw', mx: 3 }}>
+        <Stack spacing={2} sx={{ width: '100%', height:'80vh', mx: 3 }}>
         <Button
             startIcon={<ArrowBack />}
             onClick={() => navigate('/')}

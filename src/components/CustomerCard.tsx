@@ -40,7 +40,7 @@ export default function CustomerCard({ customer, onChange, editable, actions }: 
                         </Typography>
                     }
                     subheader={
-                        <Typography textTransform="uppercase" variant="caption">
+                        <Typography color="primary" textTransform="uppercase" variant="body1">
                         ID: {customer.id}
                         </Typography>
                     }
