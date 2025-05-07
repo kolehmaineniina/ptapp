@@ -266,11 +266,13 @@ export default function CustomerProfile() {
                 > {collapse ? "Collapse" : "Add new training"}
                 </Button>
                 <Collapse in={collapse}>
-                    <TrainingForm
-                    training={newTraining}
-                    onChange={handleTrainingInputChange}
-                    onSubmit={handleAddTraining}
-                    />
+                    <Stack spacing={2}>
+                        <TrainingForm
+                        training={newTraining}
+                        onChange={handleTrainingInputChange}
+                        />
+                        <Button variant="contained" onClick={handleAddTraining} disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
+                    </Stack>
                 </Collapse>
             </Box>
         </Stack>

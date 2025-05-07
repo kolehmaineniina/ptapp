@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@mui/material";
+import { Button, Dialog, DialogContent } from "@mui/material";
 import { TrainingToPost } from "../types";
 import TrainingForm from "./TrainingForm";
 import dayjs from "dayjs";
@@ -24,8 +24,8 @@ export default function CalendarDialog({ newTraining, selectedDate, open, onClos
                         date: selectedDate ? dayjs(selectedDate).toISOString() : ""
                     }}
                     onChange={onChange}
-                    onSubmit={onSubmit}
                 />
+                <Button variant="contained" onClick={onSubmit} disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
             </DialogContent>       
         </Dialog>
     )

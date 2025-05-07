@@ -1,13 +1,12 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { TrainingToPost } from "../types"
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from "dayjs";
 
-export default function TrainingForm({ training, onChange, onSubmit,
+export default function TrainingForm({ training, onChange,
 }: {
     training: TrainingToPost;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onSubmit: () => void;
 }) {
     return (
         <Stack spacing={2} >
@@ -42,7 +41,6 @@ export default function TrainingForm({ training, onChange, onSubmit,
                 onChange={onChange}
                 fullWidth
             />
-            <Button variant="contained" onClick={onSubmit} disabled={!training.date || !training.activity || Number(training.duration) <= 0}>Save Training</Button>
         </Stack>
     )
 }
