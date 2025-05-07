@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllTrainings, postTraining } from "../api/trainings";
 import { Customer, Training } from "../types";
 import { useMemo, useState } from "react";
-import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer, View, SlotInfo } from 'react-big-calendar';
 import { format } from 'date-fns/format';
 import { parse } from 'date-fns/parse';
 import { startOfWeek } from 'date-fns/startOfWeek';
@@ -14,6 +14,7 @@ import { SelectChangeEvent, Stack, Typography } from "@mui/material";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import CalendarDialog from "../components/CalendarDialog";
 import AppSnackbar from "../components/AppSnackBar";
+import dayjs from "dayjs";
 
 export default function TrainigsCalendar({customers}: {
     customers: Customer[];
@@ -77,6 +78,13 @@ export default function TrainigsCalendar({customers}: {
     const [openDialog, setOpenDialog] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null)
     const [snackbar, setSnackbar] = useState({ open: false, severity: "success" as "success" | "error" | "info", message: ""})
+    
+    const handleSlotSelect = (slotInfo: SlotInfo) => {
+        const dayStr = dayjs(slotInfo.start).toISOString();
+        setSelectedDate(slotInfo.start);
+        setNewTraining({ ...newTraining, date: dayStr });
+        setOpenDialog(true);
+    }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
         const { name, value } = event.target;
@@ -118,10 +126,7 @@ export default function TrainigsCalendar({customers}: {
         <Stack sx={{ height: '80vh', width: '100%', pt: 2}} alignItems='center'>
             <Calendar
                 selectable 
-                onSelectSlot={(slotInfo) => {
-                    setSelectedDate(slotInfo.start);
-                    setOpenDialog(true);
-                }}
+                onSelectSlot={handleSlotSelect}
                 view={view}
                 onView={handleView}
                 localizer={localizer}
