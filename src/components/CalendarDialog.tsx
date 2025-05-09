@@ -33,6 +33,7 @@ export default function CalendarDialog({ customers, newTraining, selectedDate, o
                 <FormControl>
                     <InputLabel>Select Customer</InputLabel>
                     <Select
+                        label="Select customer"
                         name="customer"
                         value={newTraining.customer ?? ""}
                         onChange={onChange}
