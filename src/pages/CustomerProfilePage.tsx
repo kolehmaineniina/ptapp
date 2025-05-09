@@ -31,7 +31,6 @@ export default function CustomerProfile() {
     const queryClient = useQueryClient();
     const refreshCustomer = async () => {
         if (!editedCustomer?._links?.trainings?.href) {
-            console.error('Cannot refresh trainings: missing customer training link');
             return;
           }
         await queryClient.invalidateQueries({ queryKey: ['customer'] });
@@ -92,8 +91,7 @@ export default function CustomerProfile() {
                 message: "Save failed",
                 severity: "error",
               });
-        }
-        
+        }  
     };
 
     const handleCancel = () => {
@@ -147,8 +145,7 @@ export default function CustomerProfile() {
     };
 
     const handleAddTraining = async () => {
-        if (!editedCustomer?._links?.self?.href) {
-            return;}
+        if (!editedCustomer?._links?.self?.href) return;
         const trainingToSend = {
             date: new Date(newTraining.date).toISOString(), 
             activity: newTraining.activity,
@@ -268,8 +265,8 @@ export default function CustomerProfile() {
                 <Collapse in={collapse}>
                     <Stack spacing={2}>
                         <TrainingForm
-                        training={newTraining}
-                        onChange={handleTrainingInputChange}
+                            training={newTraining}
+                            onChange={handleTrainingInputChange}
                         />
                         <Button variant="contained" onClick={handleAddTraining} disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
                     </Stack>

@@ -44,21 +44,21 @@ export default function TrainingsStats() {
                         </Typography>
                     }
                 />
-                <CardContent>
-                <BarChart width={500} height={500} data={totals}>
-                    <XAxis fontWeight="600" dataKey="activity" />
-                    <YAxis />
-                    <Bar 
-                        fill="#dc143C"
-                        dataKey="minutes"
-                        radius={[4, 4, 0, 0]}
+                    <CardContent>
+                        <BarChart width={500} height={500} data={totals}>
+                            <XAxis fontWeight="600" dataKey="activity" />
+                            <YAxis />
+                            <Bar 
+                                fill="#dc143C"
+                                dataKey="minutes"
+                                radius={[4, 4, 0, 0]}
 
-                    />
-                </BarChart >
-                <Typography variant="caption">
-                    Training minutes by Activity
-                </Typography>    
-            </CardContent>  
+                            />
+                        </BarChart >
+                        <Typography variant="caption">
+                            Training minutes by Activity
+                        </Typography>    
+                </CardContent>  
             </Card>
         </Box>
     )

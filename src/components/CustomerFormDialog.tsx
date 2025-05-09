@@ -26,70 +26,70 @@ export default function CustomerDialog(props: {
                 }}
             >
                 <DialogContent>
-                <TextField
-                    autoFocus
-                    required
-                    label="First Name"
-                    name="firstname"
-                    type="text"
-                    value={props.customer.firstname}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="Last Name"
-                    name="lastname"
-                    type="text"
-                    value={props.customer.lastname}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="Phone"
-                    name="phone"
-                    type="text"
-                    value={props.customer.phone}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="Email"
-                    name="email"
-                    type="text"
-                    value={props.customer.email}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="Street Address"
-                    name="streetaddress"
-                    type="text"
-                    value={props.customer.streetaddress}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="Zip Code"
-                    name="postcode"
-                    type="text"
-                    value={props.customer.postcode}
-                    onChange={props.onChange}
-                    margin="dense"
-                />
-                <TextField
-                    required
-                    label="City"
-                    name="city"
-                    type="text"
-                    value={props.customer.city}
-                    onChange={props.onChange}
-                    margin="dense"
-                />                   
+                    <TextField
+                        autoFocus
+                        required
+                        label="First Name"
+                        name="firstname"
+                        type="text"
+                        value={props.customer.firstname}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="Last Name"
+                        name="lastname"
+                        type="text"
+                        value={props.customer.lastname}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="Phone"
+                        name="phone"
+                        type="text"
+                        value={props.customer.phone}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="Email"
+                        name="email"
+                        type="text"
+                        value={props.customer.email}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="Street Address"
+                        name="streetaddress"
+                        type="text"
+                        value={props.customer.streetaddress}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="Zip Code"
+                        name="postcode"
+                        type="text"
+                        value={props.customer.postcode}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />
+                    <TextField
+                        required
+                        label="City"
+                        name="city"
+                        type="text"
+                        value={props.customer.city}
+                        onChange={props.onChange}
+                        margin="dense"
+                    />                   
                 </DialogContent>
                 <DialogActions>
                     <Button type="submit" variant="contained">Save</Button>

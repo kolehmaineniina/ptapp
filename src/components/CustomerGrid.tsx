@@ -35,17 +35,6 @@ export default function CustomerGrid(props: {
 
     const gridRef = useRef<AgGridReact<Customer>>(null);
 
-    useEffect(() => {
-        if (!gridRef.current?.api) return;
-      
-        if (props.isLoading) {
-          gridRef.current.api.showLoadingOverlay();
-        } else if (props.customers.length === 0) {
-          gridRef.current.api.showNoRowsOverlay();
-        } else {
-          gridRef.current.api.hideOverlay();
-        }
-      }, [props.isLoading, props.customers]);
 
     useEffect(() => {
       if (props.exportTrigger) {
@@ -73,6 +62,7 @@ export default function CustomerGrid(props: {
     return (
         <div style={{ height: '100%', width: '100%'}}>
             <AgGridReact
+                loading={props.isLoading}
                 ref={gridRef}
                 rowSelection="single"
                 onSelectionChanged={handleRowSelection}

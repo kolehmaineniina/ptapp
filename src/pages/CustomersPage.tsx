@@ -154,7 +154,7 @@ export default function CustomersPage({
                     Customer
                     </Button>
                 </ButtonGroup>
-                <Button size='small' sx={{color: 'black'}}startIcon={<FileDownload />} onClick={() => setExportTrigger(true)} color="secondary">
+                <Button size='small' sx={{color: 'black'}}startIcon={<FileDownload />} onClick={() => setExportTrigger(true)}>
                 Export to CSV
                 </Button>
             </Stack>
@@ -172,35 +172,35 @@ export default function CustomersPage({
                     newRowId={CustomerId}
                 />
             </Box>
-        <CustomerDrawer
-            anchor={"right"}
-            open={openDrawer}
-            customer={selectedCustomer}
-            trainings={trainings}
-            isLoading={trainingsLoading}
-            error={trainingsError}
-            onClose={() => setOpenDrawer(false)}
-            onDelete={() => {}}
-        />
-        <ConfirmationDialog 
-            open={openConfirmation}
-            onClose={() => setConfirmation(false)}
-            onConfirm={handleConfirmation}
-            customerName={`${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`}
-        />
-        <CustomerDialog 
-            open={openForm}
-            onClose={() => setOpenForm(false)}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-            customer={selectedCustomer}
-        />
-        <AppSnackbar
-            open={snackbar.open}
-            message={snackbar.message}
-            severity={snackbar.severity}
-            onClose={() => setSnackbar({ ...snackbar, open: false })}
-        />
+            <CustomerDrawer
+                anchor={"right"}
+                open={openDrawer}
+                customer={selectedCustomer}
+                trainings={trainings}
+                isLoading={trainingsLoading}
+                error={trainingsError}
+                onClose={() => setOpenDrawer(false)}
+                onDelete={() => {}}
+            />
+            <ConfirmationDialog 
+                open={openConfirmation}
+                onClose={() => setConfirmation(false)}
+                onConfirm={handleConfirmation}
+                customerName={`${selectedCustomer?.firstname} ${selectedCustomer?.lastname}`}
+            />
+            <CustomerDialog 
+                open={openForm}
+                onClose={() => setOpenForm(false)}
+                onChange={handleInputChange}
+                onSubmit={handleSubmit}
+                customer={selectedCustomer}
+            />
+            <AppSnackbar
+                open={snackbar.open}
+                message={snackbar.message}
+                severity={snackbar.severity}
+                onClose={() => setSnackbar({ ...snackbar, open: false })}
+            />
         </Stack>
     )
 }

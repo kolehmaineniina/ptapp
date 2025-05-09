@@ -106,6 +106,7 @@ export default function TrainigsCalendar({customers}: {
                 message: "Training added successfully!",
                 severity: "success",
             });
+
         } catch (error) {
             setSnackbar({
                 open: true,
@@ -135,7 +136,7 @@ export default function TrainigsCalendar({customers}: {
                 endAccessor="end"
                 style={{ height: '90%', width: '90%' }}
             />
-            <CalendarDialog 
+            <CalendarDialog
                 customers={customers}
                 newTraining={newTraining}
                 selectedDate={selectedDate}

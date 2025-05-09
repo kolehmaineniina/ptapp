@@ -15,16 +15,16 @@ export default function TrainingForm({ training, onChange,
                 value={training.date ? dayjs(training.date) : null}
                 onChange={(date) => {
                     if (date) {
-                    onChange({
-                        target: {
-                        name: "date",
-                        value: date.toISOString(),
-                        }
-                    } as React.ChangeEvent<HTMLInputElement>);
+                        onChange({
+                            target: {
+                            name: "date",
+                            value: date.toISOString(),
+                            }
+                        } as React.ChangeEvent<HTMLInputElement>);
                     }
                 }}
                 slotProps={{ textField: { fullWidth: true } }}
-                />
+            />
             <TextField
                 label="Activity"
                 type="text"

@@ -41,6 +41,7 @@ export default function CalendarDialog({ customers, newTraining, selectedDate, o
                         </MenuItem>
                     ))}
                     </Select>
+                    </FormControl>
                     <TrainingForm
                         training={{
                             ...newTraining,
@@ -49,7 +50,6 @@ export default function CalendarDialog({ customers, newTraining, selectedDate, o
                         onChange={onChange}
                     />
                     <Button variant="contained" type="submit" disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
-                </FormControl>
             </DialogContent>       
         </Dialog>
     )
