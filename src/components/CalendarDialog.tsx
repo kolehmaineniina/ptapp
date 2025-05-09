@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
+import { Button, Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
 import { Customer, TrainingToPost } from "../types";
 import TrainingForm from "./TrainingForm";
 import dayjs from "dayjs";
