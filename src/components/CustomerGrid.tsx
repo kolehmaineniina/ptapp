@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react"
 import { AllCommunityModule, ModuleRegistry, RowClickedEvent } from 'ag-grid-community'
 import { ColDef } from "ag-grid-community"
 import { useEffect, useMemo, useRef} from 'react';
+import { Box } from '@mui/material';
 
 ModuleRegistry.registerModules([AllCommunityModule])
 
@@ -17,20 +18,20 @@ export default function CustomerGrid(props: {
 }) {
     
     const colDefs: ColDef<Customer>[] = useMemo(() => [
-        { headerName: 'Select', checkboxSelection: true, width: 100, suppressCsvExport: true},
+        { headerName: 'Select', checkboxSelection: true, width: 90, suppressCsvExport: true},
         { headerName: 'ID', field: 'id', 
           sortable: false, 
           filter: true, 
           floatingFilter: true,
-          width: 100,
+          width: 120,
         },  
-        { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true, width: 120},
-        { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true, width: 120 },
-        { headerName: 'Email', field: 'email', sortable: false, width: 150 },
-        { headerName: 'Phone', field: 'phone', sortable: false, width: 120 },
-        { headerName: 'Street Address', field: 'streetaddress', sortable: false, width:150 },
-        { headerName: 'Zip Code', field: 'postcode', width: 100 },
-        { headerName: 'City', field: 'city', width: 100 }
+        { headerName: 'First Name', field: 'firstname', filter: true, floatingFilter: true },
+        { headerName: 'Last Name', field: 'lastname', filter: true, floatingFilter: true },
+        { headerName: 'Email', field: 'email', sortable: false },
+        { headerName: 'Phone', field: 'phone', sortable: false },
+        { headerName: 'Street Address', field: 'streetaddress', sortable: false },
+        { headerName: 'Zip Code', field: 'postcode', width: 120 },
+        { headerName: 'City', field: 'city', width: 120 }
     ], []);
 
     const gridRef = useRef<AgGridReact<Customer>>(null);
@@ -60,7 +61,7 @@ export default function CustomerGrid(props: {
     }
 
     return (
-        <div style={{ height: '100%', width: '100%'}}>
+        <Box style={{ height: '100%', width: '85vw'}}>
             <AgGridReact
                 loading={props.isLoading}
                 ref={gridRef}
@@ -80,6 +81,6 @@ export default function CustomerGrid(props: {
                   }
                 }}
             />
-        </div>
+        </Box>
     );
 }
