@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack } from "@mui/material";
 import { Customer, TrainingToPost } from "../types";
 import TrainingForm from "./TrainingForm";
 import dayjs from "dayjs";
@@ -27,14 +27,17 @@ export default function CalendarDialog({ customers, newTraining, selectedDate, o
                 }
             }}
         >
-            <DialogContent>
+        
+        <DialogContent>
+            <Stack sx={{width: 250}} spacing={2}>
                 <FormControl>
+                    <InputLabel>Select Customer</InputLabel>
                     <Select
-                        label="Select customer"
                         name="customer"
                         value={newTraining.customer ?? ""}
                         onChange={onChange}
                         required
+                        fullWidth
                     > {customers.map((c: Customer)=> (
                         <MenuItem key={c.id} value={`https://customerrestservice-personaltraining.rahtiapp.fi/api/customers/${c.id}`}>
                             {c.firstname} {c.lastname}
@@ -50,7 +53,8 @@ export default function CalendarDialog({ customers, newTraining, selectedDate, o
                         onChange={onChange}
                     />
                     <Button variant="contained" type="submit" disabled={!newTraining.date || !newTraining.activity || Number(newTraining.duration) <= 0}>Save Training</Button>
-            </DialogContent>       
+                </Stack> 
+            </DialogContent>      
         </Dialog>
     )
 }

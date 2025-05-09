@@ -141,7 +141,10 @@ export default function TrainigsCalendar({customers}: {
                 newTraining={newTraining}
                 selectedDate={selectedDate}
                 open={openDialog}
-                onClose={() => setOpenDialog(false)}
+                onClose={() => {
+                    setOpenDialog(false)
+                    setNewTraining(emptyTraining)
+                }}
                 onSubmit={handleBooking}
                 onChange={handleInputChange}
             />
